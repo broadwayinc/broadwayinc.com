@@ -6,10 +6,10 @@
     br
     br
     div.
-      skapi serverless cloud services#[br]
-      wato studio#[br]
+      skapi serverless&nbsp;cloud&nbsp;services#[br]
+      wato&nbsp;studio#[br]
       #[br]
-      2F Yohan House, 24, Seongmisan-ro, Mapo-gu, Seoul, 03997, Republic of Korea
+      2F&nbsp;Yohan&nbsp;House, 24, Seongmisan-ro, Mapo-gu, Seoul, 03997, Republic&nbsp;of&nbsp;Korea
 </template>
 <style scoped lang="less">
 .shell {
@@ -20,7 +20,7 @@
   display: flex;
 
   .head {
-    margin: 8px;
+    margin: 1em;
 
     div {
       opacity: 0.88;

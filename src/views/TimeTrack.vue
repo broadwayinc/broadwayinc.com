@@ -6,6 +6,8 @@
 
     div(v-if="user")
       .stamp(v-for="h in history") {{new Date(h.uploaded)}}
+      br
+      sui-button(v-if="lastStartKey && lastStartKey !== 'end'" @click='getRecords') Load More
 
     div(v-else)
       h2 Login to punch In/Out
@@ -19,6 +21,7 @@
         br
         br
         sui-input(type='submit')
+        
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -28,22 +31,29 @@ let user = ref(null);
 let history = ref([]);
 let lastStartKey = null;
 
+function getRecords() {
+  skapi.getRecords({
+    table: 'timetrack',
+    reference: user.value.user_id,
+    access_group: 'private'
+  }, {
+    ascending: false,
+    limit: 60,
+    startKey: lastStartKey
+  }).then(rec => {
+    lastStartKey = rec.startKey;
+    history.value = history.value.concat(rec.list);
+  });
+}
+
 let login_opt = {
   response: async (u) => {
     user.value = u;
     await skapi.postRecord(null, {
-      table: 'timetrack'
-    });
-    let rec = await skapi.getRecords({
       table: 'timetrack',
-      reference: skapi.user.user_id
-    }, {
-      ascending: false,
-      limit: 60,
-      startKey: lastStartKey
+      access_group: 'private'
     });
-    lastStartKey = rec.startKey;
-    history.value = history.value.concat(rec.list);
+    getRecords();
   }
 }
 
