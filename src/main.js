@@ -1,13 +1,9 @@
 import { createApp, ref } from 'vue';
 import App from './App.vue';
 import router from './router';
-
 import './assets/base.css';
-import { defineCustomElements } from 'skateui/loader';
-
 import { Skapi } from "skapi-js";
 
-defineCustomElements(window);
 const app = createApp(App);
 
 app.use(router);
