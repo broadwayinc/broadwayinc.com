@@ -8,8 +8,8 @@
     div.
       skapi serverless&nbsp;cloud&nbsp;services#[br]
       wato&nbsp;studio#[br]
-      #[br]
-      2F&nbsp;Yohan&nbsp;House, 24, Seongmisan-ro, Mapo-gu, Seoul, 03997, Republic&nbsp;of&nbsp;Korea
+    br
+    div(style="font-size: 14px;") 2F&nbsp;Yohan&nbsp;House, 24, Seongmisan-ro, Mapo-gu, Seoul, 03997, Republic&nbsp;of&nbsp;Korea
 </template>
 <style scoped lang="less">
 .shell {

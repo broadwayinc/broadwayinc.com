@@ -55,10 +55,10 @@ let history_computed = computed({
     let arr = [];
     if (history.value.length) {
       if (lastStartKey.value === 'end' && punchHold) {
-        history.value.push({ opt: 'out', punch: punchOut, duration: msToHMS(punchOut - punchHold).str });
-        history.value.push({ opt: 'in', punch: punchHold });
+        // end of list
+        arr.push({ opt: 'out', punch: punchOut, duration: msToHMS(punchOut - punchHold).str });
+        arr.push({ opt: 'in', punch: punchHold });
       }
-      return history.value.concat(arr);
     }
     else if (punchOut) {
       if (punchHold) {
@@ -69,7 +69,9 @@ let history_computed = computed({
         arr.push({ opt: 'in', punch: punchOut });
       }
     }
-    return arr;
+
+    // return with additional concat
+    return history.value.concat(arr);
   }
 });
 
@@ -78,8 +80,6 @@ function sortHistory(list) {
 
   for (let h of list) {
     let punchTime = new Date(h.uploaded);
-    console.log(punchTime)
-    // arr.push({ opt: 'in', punch: punchTime });
 
     if (!punchOut) {
       punchOut = punchTime;
@@ -107,7 +107,7 @@ function sortHistory(list) {
 async function getRecords() {
 
   let rec = await skapi.getRecords({
-    table: 'Time Punch',
+    table: 'timestamp',
     reference: user.value.user_id,
     access_group: 'private'
   }, {
@@ -115,8 +115,6 @@ async function getRecords() {
     limit: 1000,
     refresh: !lastStartKey.value
   });
-
-  console.log(rec.list.map(r=>{return {d:new Date(r.uploaded),r:r.record_id}}))
 
   lastStartKey.value = rec.startKey;
   history.value = history.value.concat(sortHistory(rec.list));
@@ -126,7 +124,7 @@ let login_opt = {
   response: async (u) => {
     user.value = u;
     await skapi.postRecord(null, {
-      table: 'Time Punch',
+      table: 'timestamp',
       access_group: 'private'
     });
     getRecords();
