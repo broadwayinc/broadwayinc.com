@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp, ref } from 'vue';
 import App from './App.vue';
 import router from './router';
 
@@ -14,4 +14,5 @@ app.use(router);
 
 app.mount('#app');
 
-export const skapi = new Skapi('ap22lazr5d2xrzhl6s77ea', '7aa4ffe1-1b06-4375-9be2-47d89da9d206');
+export const skapi = new Skapi('ap22TP6OQRDgenwunsVi', '7aa4ffe1-1b06-4375-9be2-47d89da9d206');
+export const user = ref(null);

@@ -1,12 +1,16 @@
 <template lang="pug">
 .shell
+  br
+  br
   .head
-    h1 {{user ? user.name || user.email : 'Time Tracker'}}
+    h1(style="margin:0;width:calc(100% - 128px);display:inline-block;vertical-align:middle;") {{user ? 'Hello ' + (user.name || user.email) : 'Time Punch'}}
+    router-link(to="profile")
+      sui-button(v-if="user" style="width: 128px;background-color:transparent;color:black;border:2px solid rgba(0 0 0 / 50%);vertical-align:middle;") Edit Profile
     hr
-
     div(v-if="user")
       .stamp(v-if="!history_computed.length") ... History loading
-      .stamp(v-for="h in history_computed" :style="{'color': h.opt === 'in' ? 'green' : 'red'}") {{h.punch.toLocaleString()}} [{{h.opt === 'in' ? 'in' : 'out:&nbsp;'}}{{h.opt === 'out' ? h.duration : ''}}]
+      template(v-for="h, idx in history_computed")
+        .stamp(v-if="idx < history_computed.length - 2 || lastStartKey === 'end'" :style="{'color': h.opt === 'in' ? 'green' : 'red'}") {{h.punch.toLocaleString()}} [{{h.opt === 'in' ? 'in' : 'out:&nbsp;'}}{{h.opt === 'out' ? h.duration : ''}}]
       br
       sui-button(v-if="lastStartKey && lastStartKey !== 'end'" @click='getRecords') Load More
 
@@ -25,14 +29,17 @@
         
 </template>
 <script setup>
-import { computed, ref } from 'vue';
-import { skapi } from '../main';
+import { computed, onUnmounted, ref } from 'vue';
+import { skapi, user } from '../main';
 
-let user = ref(null);
 let history = ref([]);
-let lastStartKey = null;
+let lastStartKey = ref(null);
 let punchOut = null;
 let punchHold = null;
+
+onUnmounted(() => {
+  lastStartKey.value = null;
+});
 
 function msToHMS(ms) {
   let seconds = parseInt(ms / 1000);
@@ -46,9 +53,12 @@ function msToHMS(ms) {
 let history_computed = computed({
   get() {
     let arr = [];
-
     if (history.value.length) {
-      return history.value;
+      if (lastStartKey.value === 'end' && punchHold) {
+        history.value.push({ opt: 'out', punch: punchOut, duration: msToHMS(punchOut - punchHold).str });
+        history.value.push({ opt: 'in', punch: punchHold });
+      }
+      return history.value.concat(arr);
     }
     else if (punchOut) {
       if (punchHold) {
@@ -68,6 +78,8 @@ function sortHistory(list) {
 
   for (let h of list) {
     let punchTime = new Date(h.uploaded);
+    console.log(punchTime)
+    // arr.push({ opt: 'in', punch: punchTime });
 
     if (!punchOut) {
       punchOut = punchTime;
@@ -75,9 +87,8 @@ function sortHistory(list) {
     }
 
     let diff = msToHMS(punchOut - punchTime);
-
-    if (diff.hours <= 14) {
-      // if within range (0 ~ 14 hour range)
+    if (diff.hours <= 11) {
+      // if within range (12 hour range)
       punchHold = punchTime;
     }
     else {
@@ -85,10 +96,8 @@ function sortHistory(list) {
       if (punchHold) {
         arr.push({ opt: 'out', punch: punchOut, duration: msToHMS(punchOut - punchHold).str });
         arr.push({ opt: 'in', punch: punchHold });
+        punchOut = punchTime;
       }
-
-      punchOut = punchTime;
-      punchHold = null;
     }
   }
 
@@ -96,17 +105,20 @@ function sortHistory(list) {
 }
 
 async function getRecords() {
+
   let rec = await skapi.getRecords({
-    table: 'timetrack',
+    table: 'Time Punch',
     reference: user.value.user_id,
     access_group: 'private'
   }, {
     ascending: false,
-    limit: 100,
-    startKey: lastStartKey
+    limit: 1000,
+    refresh: !lastStartKey.value
   });
 
-  lastStartKey = rec.startKey;
+  console.log(rec.list.map(r=>{return {d:new Date(r.uploaded),r:r.record_id}}))
+
+  lastStartKey.value = rec.startKey;
   history.value = history.value.concat(sortHistory(rec.list));
 }
 
@@ -114,11 +126,15 @@ let login_opt = {
   response: async (u) => {
     user.value = u;
     await skapi.postRecord(null, {
-      table: 'timetrack',
+      table: 'Time Punch',
       access_group: 'private'
     });
     getRecords();
   }
+};
+
+if (user.value) {
+  getRecords();
 }
 
 </script>
