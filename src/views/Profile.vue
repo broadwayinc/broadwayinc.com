@@ -33,7 +33,7 @@
       br
       form(ref='updatePw' @submit.prevent="skapi.updateUserSettings($refs.updatePw, update_opt)")
         label(for="opw") Current Password
-        sui-input#opw(autocomplete="new-password" :name='current_password' type='password' placeholder='Password' required)
+        sui-input#opw(autocomplete="new-password" name='current_password' type='password' placeholder='Password' required)
         br
         br
         label(for="pw") New Password
