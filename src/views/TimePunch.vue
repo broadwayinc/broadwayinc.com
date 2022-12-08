@@ -79,6 +79,11 @@ function sortHistory(list) {
   let arr = [];
 
   for (let h of list) {
+    if(h.ip !== '211.217.251.144') {
+      // wrong record ip
+      continue;
+    }
+
     let punchTime = new Date(h.uploaded);
 
     if (!punchOut) {
@@ -105,7 +110,6 @@ function sortHistory(list) {
 }
 
 async function getRecords() {
-
   let rec = await skapi.getRecords({
     table: 'timestamp',
     reference: user.value.user_id,
@@ -123,10 +127,12 @@ async function getRecords() {
 let login_opt = {
   response: async (u) => {
     user.value = u;
-    await skapi.postRecord(null, {
-      table: 'timestamp',
-      access_group: 'private'
-    });
+    if (skapi.connection.ip == '211.217.251.144') {
+      await skapi.postRecord(null, {
+        table: 'timestamp',
+        access_group: 'private'
+      });
+    }
     getRecords();
   }
 };
