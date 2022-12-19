@@ -13,7 +13,7 @@
 </template>
 <style scoped lang="less">
 .shell {
-  max-width: 1400px;
+  max-width: 1024px;
   margin: auto;
   min-height: 100vh;
   align-items: center;
