@@ -12,43 +12,43 @@
 
     div(v-if="user")
       // history box
-      
+
       template(v-if="!history.length")
         // loader
         .stamp(v-if="didCall") No history
         .stamp(v-else) ... History loading
-      
+
       template(v-else)
         // history
         .stamp(v-for="h, idx in history" :style="{'color': h.opt === 'in' ? 'green' : 'red'}") {{h.punch.toLocaleString()}} [{{h.opt === 'in' ? 'in' : 'out:&nbsp;'}}{{h.opt === 'out' ? h.duration : ''}}]
-      
+
       br
-      
+
       sui-button(v-if="lastStartKey && lastStartKey !== 'end'" @click='getRecords') Load More
 
     div(v-else)
       // login box
 
       h2 Login to punch In/Out
-      
+
       form(ref='loginForm' @submit.prevent="skapi.login($refs.loginForm, login_opt)")
         label(for="email") E-Mail
         sui-input#email(name='email' type='email' placeholder='your-email@broadwayinc.com' required)
-        
+
         br
         br
-        
+
         label(for="pw") Password
         sui-input#pw(name='password' type='password' placeholder='Password' required)
-        
+
         br
         br
-        
+
         sui-input(type='submit')
         
 </template>
 <script setup>
-import { onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 import { skapi, user } from '../main';
 
 let history = ref([]);
@@ -56,10 +56,6 @@ let lastStartKey = ref(null);
 let lastPunch = null;
 let startPunch = null;
 let didCall = ref(false);
-
-onUnmounted(() => {
-  lastStartKey.value = null;
-});
 
 function msToHMS(ms) {
   let seconds = parseInt(ms / 1000);
@@ -70,7 +66,7 @@ function msToHMS(ms) {
   return { hours, minutes, seconds, str: `${hours}h ${minutes}m ${seconds}s` };
 }
 
-function resolveLeftovers(punchTime) {
+function resolvePunch(punchTime) {
   let arr = history.value;
 
   if (startPunch) {
@@ -90,11 +86,6 @@ function resolveLeftovers(punchTime) {
 }
 
 async function getRecords() {
-  if (lastStartKey.value === 'end') {
-    // no more fetching
-    return;
-  }
-
   let rec = await skapi.getRecords({
     table: 'timestamp',
     reference: user.value.user_id,
@@ -104,8 +95,6 @@ async function getRecords() {
     limit: 1000,
     refresh: !lastStartKey.value
   });
-
-  didCall.value = true;
 
   let list = rec.list;
   for (let h of list) {
@@ -134,13 +123,13 @@ async function getRecords() {
     }
     else {
       // out of range
-      resolveLeftovers(punchTime);
+      resolvePunch(punchTime);
     }
   }
 
   if (rec.startKey === 'end') {
     // end of list, resolve leftovers
-    resolveLeftovers();
+    resolvePunch();
   }
 
   lastStartKey.value = rec.startKey;
@@ -155,13 +144,14 @@ let login_opt = {
         access_group: 'private'
       });
     }
-    getRecords();
+
+    getRecords().then(r => didCall.value = true);
   }
 };
 
 if (user.value) {
   // already logged in
-  getRecords();
+  getRecords().then(r => didCall.value = true);
 }
 
 </script>
