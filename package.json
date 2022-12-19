@@ -5,10 +5,10 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host"
   },
   "dependencies": {
-    "skapi-js": "^0.0.48",
+    "skapi-js": "^0.0.55",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
