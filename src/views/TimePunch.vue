@@ -3,16 +3,44 @@
   br
   br
   .head
-    h1(style="margin:0;width:calc(100% - 128px);display:inline-block;vertical-align:middle;") {{user ? 'Hello ' + (user.name || user.email) : 'Time Punch'}}
+    h1(style="margin:0;display:inline-block;vertical-align:middle;") {{user ? 'Hello ' + (user.name || user.email) + (isAdmin ? ' [Admin]' : '') : 'Time Punch'}}
 
     router-link(to="profile")
-      sui-button(v-if="user" style="width: 128px;background-color:transparent;color:black;border:2px solid rgba(0 0 0 / 50%);vertical-align:middle;") Edit Profile
+      sui-button(v-if="user" style="float:right;background-color:transparent;color:black;border:2px solid rgba(0 0 0 / 50%);vertical-align:middle;") Edit Profile
 
     hr
 
-    div(v-if="user")
-      // history box
+    div(v-if='!user')
+      // login box
 
+      h2 Login to punch In/Out
+
+      form(ref='loginForm' @submit.prevent="skapi.login($refs.loginForm, login_opt)")
+        label(for="email") E-Mail
+        sui-input#email(name='email' type='email' placeholder='your-email@broadwayinc.com' required autocomplete='username')
+
+        br
+        br
+
+        label(for="pw") Password
+        sui-input#pw(name='password' type='password' placeholder='Password' required autocomplete='current-password')
+
+        br
+        br
+
+        sui-input(type='submit')
+
+    div(v-else-if='isAdmin')
+      template(v-if='!userToFetch')
+        template(v-if="!users.length")
+          // loader
+          .stamp(v-if="didCallUsers") No Users
+          .stamp(v-else) ... Users loading
+        template(v-else)
+          .stamp.userSelect(v-for="u, idx in users" @click="()=>{userToFetch = u.user_id;getRecords();}") {{u.name || u.email || u.user_id}}
+
+    div(v-else)
+      // history box
       template(v-if="!history.length")
         // loader
         .stamp(v-if="didCall") No history
@@ -20,31 +48,12 @@
 
       template(v-else)
         // history
+        .stamp Days: {{ trackHours.days}}, Hour Gap: {{calcHMS(trackHours.gap).str}}
         .stamp(v-for="h, idx in history" :style="{'color': h.opt === 'in' ? 'green' : 'red'}") {{h.punch.toLocaleString()}} [{{h.opt === 'in' ? 'in' : 'out:&nbsp;'}}{{h.opt === 'out' ? h.duration : ''}}]
 
       br
 
       sui-button(v-if="lastStartKey && lastStartKey !== 'end'" @click='getRecords') Load More
-
-    div(v-else)
-      // login box
-
-      h2 Login to punch In/Out
-
-      form(ref='loginForm' @submit.prevent="skapi.login($refs.loginForm, login_opt)")
-        label(for="email") E-Mail
-        sui-input#email(name='email' type='email' placeholder='your-email@broadwayinc.com' required)
-
-        br
-        br
-
-        label(for="pw") Password
-        sui-input#pw(name='password' type='password' placeholder='Password' required)
-
-        br
-        br
-
-        sui-input(type='submit')
         
 </template>
 <script setup>
@@ -56,23 +65,56 @@ let lastStartKey = ref(null);
 let lastPunch = null;
 let startPunch = null;
 let didCall = ref(false);
+let isAdmin = ref(false);
+let didCallUsers = ref(false);
+let users = ref([]);
+let userToFetch = ref(null);
 
-function msToHMS(ms) {
-  let seconds = parseInt(ms / 1000);
-  let hours = parseInt(seconds / 3600);
-  seconds = seconds % 3600;
-  let minutes = parseInt(seconds / 60);
-  seconds = seconds % 60;
-  return { hours, minutes, seconds, str: `${hours}h ${minutes}m ${seconds}s` };
+
+function calcHMS(ms) {
+
+  function getHMS(ms) {
+    let seconds = parseInt(ms / 1000);
+    let hours = parseInt(seconds / 3600);
+    seconds = seconds % 3600;
+    let minutes = parseInt(seconds / 60);
+    seconds = seconds % 60;
+    return { seconds, hours, minutes };
+  }
+
+  let nine_hrs = 32400000;
+  let { seconds, hours, minutes } = getHMS(ms);
+
+  return { hours, minutes, seconds, str: `${hours}h ${minutes}m ${seconds}s`, gap: ms - nine_hrs };
 }
+
+let trackHours = ref({
+  days: 0,
+  total: [0, 0, 0],
+  gap: 0
+});
 
 function resolvePunch(punchTime) {
   let arr = history.value;
 
   if (startPunch) {
     // use lastPunch(out) / startPunch(in)
-    arr.push({ opt: 'out', punch: lastPunch, duration: msToHMS(lastPunch - startPunch).str });
-    arr.push({ opt: 'in', punch: startPunch });
+    let calc = calcHMS(lastPunch - startPunch);
+    if (calc.seconds < 0 || calc.minutes < 0) {
+      arr.push({ opt: 'in', punch: lastPunch });
+    }
+    else {
+      if (calc.hours) {
+        trackHours.value.days++;
+        trackHours.value.total[0] += calc.hours;
+        trackHours.value.total[1] += calc.minutes;
+        trackHours.value.total[2] += calc.seconds;
+
+        trackHours.value.gap += calc.gap;
+      }
+      arr.push({ opt: 'out', punch: lastPunch, duration: calc.str });
+      arr.push({ opt: 'in', punch: startPunch });
+    }
   }
 
   else if (lastPunch) {
@@ -87,15 +129,16 @@ function resolvePunch(punchTime) {
 
 async function getRecords() {
   let rec = await skapi.getRecords({
+    service: 'ap22TP6OQRDgenwunsVi',
     table: 'timestamp',
-    reference: user.value.user_id,
+    reference: userToFetch.value,
     access_group: 'private'
   }, {
     ascending: false,
     limit: 1000,
-    refresh: !lastStartKey.value
+    fetchMore: true
   });
-
+  console.log({ rec });
   let list = rec.list;
   for (let h of list) {
     // h = punch record
@@ -115,9 +158,9 @@ async function getRecords() {
       continue;
     }
 
-    let diff = msToHMS(lastPunch - punchTime);
+    let diff = calcHMS(lastPunch - punchTime);
 
-    if (diff.hours <= 11) {
+    if (diff.hours <= 11 && diff.hours >= 0) {
       // within 12 hour
       startPunch = punchTime;
     }
@@ -131,8 +174,17 @@ async function getRecords() {
     // end of list, resolve leftovers
     resolvePunch();
   }
-
+  
   lastStartKey.value = rec.startKey;
+}
+
+async function getUsers() {
+  users.value = (await skapi.getUsers({
+    service: 'ap22TP6OQRDgenwunsVi',
+    searchFor: 'user_id',
+    value: '61191fbe-8874-43b0-aa13-538c8fbde193'
+  })).list;
+  didCallUsers.value = true;
 }
 
 let login_opt = {
@@ -145,17 +197,27 @@ let login_opt = {
       });
     }
 
+    userToFetch.value = u.user_id;
     getRecords().then(r => didCall.value = true);
   }
 };
 
-if (user.value) {
+if (user.value && !isAdmin.value) {
   // already logged in
+  userToFetch.value = u.user_id;
   getRecords().then(r => didCall.value = true);
 }
 
 </script>
 <style scoped lang="less">
+.userSelect {
+  cursor: pointer;
+
+  &:hover {
+    color: green;
+  }
+}
+
 .shell {
   max-width: 1024px;
   margin: auto;
