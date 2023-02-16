@@ -30,14 +30,14 @@
 
         sui-input(type='submit')
 
-    div(v-else-if='isAdmin')
+    div(v-else-if='isAdmin && !didCall')
       template(v-if='!userToFetch')
         template(v-if="!users.length")
           // loader
           .stamp(v-if="didCallUsers") No Users
           .stamp(v-else) ... Users loading
         template(v-else)
-          .stamp.userSelect(v-for="u, idx in users" @click="()=>{userToFetch = u.user_id;getRecords();}") {{u.name || u.email || u.user_id}}
+          .stamp.userSelect(v-for="u, idx in users" @click="()=>{userToFetch = u.user_id;getRecords().then(()=>didCall = true);}") {{u.name || u.email || u.user_id}}
 
     div(v-else)
       // history box
@@ -174,31 +174,34 @@ async function getRecords() {
     // end of list, resolve leftovers
     resolvePunch();
   }
-  
+
   lastStartKey.value = rec.startKey;
 }
 
 async function getUsers() {
-  users.value = (await skapi.getUsers({
-    service: 'ap22TP6OQRDgenwunsVi',
-    searchFor: 'user_id',
-    value: '61191fbe-8874-43b0-aa13-538c8fbde193'
-  })).list;
+  users.value = (await skapi.getUsers()).list;
   didCallUsers.value = true;
 }
 
 let login_opt = {
   response: async (u) => {
-    user.value = u;
-    if (skapi.connection.ip == '211.217.251.144') {
-      await skapi.postRecord(null, {
-        table: 'timestamp',
-        access_group: 'private'
-      });
-    }
+    console.log(u);
 
-    userToFetch.value = u.user_id;
-    getRecords().then(r => didCall.value = true);
+    user.value = u;
+    if (u.access_group == 99) {
+      isAdmin.value = true;
+      getUsers();
+    }
+    else {
+      if (skapi.connection.ip == '211.217.251.144') {
+        await skapi.postRecord(null, {
+          table: 'timestamp',
+          access_group: 'private'
+        });
+      }
+      userToFetch.value = u.user_id;
+      getRecords().then(r => didCall.value = true);
+    }
   }
 };
 
