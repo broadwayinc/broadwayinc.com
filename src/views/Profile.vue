@@ -11,7 +11,7 @@
     hr
     div
       br
-      form(ref='updatePf' @submit.prevent="skapi.updateUserSettings($refs.updatePf, update_opt)")
+      form(ref='updatePf' @submit.prevent="skapi.updateProfile($refs.updatePf, update_opt)")
         label(for="email") E-Mail
         br
         sui-input#email(name='email' type='email' placeholder='your-email@broadwayinc.com' :value='user.email')
@@ -31,7 +31,7 @@
     hr
     div
       br
-      form(ref='updatePw' @submit.prevent="skapi.updateUserSettings($refs.updatePw, update_opt)")
+      form(ref='updatePw' @submit.prevent="skapi.updateProfile($refs.updatePw, update_opt)")
         label(for="opw") Current Password
         sui-input#opw(autocomplete="new-password" name='current_password' type='password' placeholder='Password' required)
         br

@@ -130,15 +130,16 @@ function resolvePunch(punchTime) {
 async function getRecords() {
   let rec = await skapi.getRecords({
     service: 'ap22TP6OQRDgenwunsVi',
-    table: 'timestamp',
-    reference: userToFetch.value,
-    access_group: 'private'
+    table: {
+      name: 'timestamp',
+      access_group: 'private'
+    },
+    reference: userToFetch.value
   }, {
     ascending: false,
     limit: 1000,
     fetchMore: true
   });
-  console.log({ rec });
   let list = rec.list;
   for (let h of list) {
     // h = punch record
@@ -185,8 +186,6 @@ async function getUsers() {
 
 let login_opt = {
   response: async (u) => {
-    console.log(u);
-
     user.value = u;
     if (u.access_group == 99) {
       isAdmin.value = true;
@@ -195,8 +194,10 @@ let login_opt = {
     else {
       if (skapi.connection.ip == '211.217.251.144') {
         await skapi.postRecord(null, {
-          table: 'timestamp',
-          access_group: 'private'
+          table: {
+            name: 'timestamp',
+            access_group: 'private'
+          }
         });
       }
       userToFetch.value = u.user_id;
