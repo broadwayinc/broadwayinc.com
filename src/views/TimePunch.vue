@@ -129,7 +129,6 @@ function resolvePunch(punchTime) {
 
 async function getRecords() {
   let rec = await skapi.getRecords({
-    service: 'ap22TP6OQRDgenwunsVi',
     table: {
       name: 'timestamp',
       access_group: 'private'
