@@ -10,7 +10,7 @@
       You might hit a brick wall when your goal seems to be just within your grasp.
       On&nbsp;top&nbsp;of&nbsp;that, there's also an element of luck to be involved.
       Yet, we see these challenges as the beauty of your&nbsp;great&nbsp;journey, and we are eager to make&nbsp;it&nbsp;happen.
-    p(style="text-align:right") from&nbsp;the&nbsp;CEO - &nbsp;Baksa Gimm
+    p(style="opacity:1;text-align:right") from&nbsp;the&nbsp;CEO - &nbsp;Baksa Gimm
     br
     br
     h2 Our Services
@@ -48,13 +48,15 @@
 </template>
 <style scoped lang="less">
 hr {
-  opacity: 0.25;
+  opacity: 0.2;
 }
 
 h2 {
   font-weight: 300;
 }
-
+p{
+  opacity: .8;
+}
 .shell {
   max-width: 1200px;
   margin: auto;
