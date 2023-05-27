@@ -8,7 +8,6 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
-    "skapi-js": "^0.0.101",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

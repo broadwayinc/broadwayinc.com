@@ -9,16 +9,16 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
-    {
-      path: '/admin/timepunch',
-      name: 'timepunch',
-      component: () => import('../views/TimePunch.vue')
-    },
-    {
-      path: '/admin/profile',
-      name: 'profile',
-      component: () => import('../views/Profile.vue')
-    }
+    // {
+    //   path: '/admin/timepunch',
+    //   name: 'timepunch',
+    //   component: () => import('../views/TimePunch.vue')
+    // },
+    // {
+    //   path: '/admin/profile',
+    //   name: 'profile',
+    //   component: () => import('../views/Profile.vue')
+    // }
   ]
 })
 

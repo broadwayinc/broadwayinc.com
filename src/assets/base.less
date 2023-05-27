@@ -1,0 +1,35 @@
+@phone: ~'only screen and (max-width: 442px)';
+@tablet: ~'only screen and (max-width: 768px)';
+@ipad: ~'only screen and (max-width: 1024px)';
+@laptop: ~'only screen and (max-width: 1366px)';
+@large: ~'only screen and (max-width: 1600px)';
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  line-height: 1.6;
+  font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 300;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 32px;
+  @media @large {
+    font-size: 24px;
+  }
+
+  @media @laptop {
+    font-size: 20px;
+  }
+
+  @media @ipad {
+    font-size: 18px;
+  }
+
+  // @media @tablet {
+  //   font-size: 14px;
+  // }
+}
