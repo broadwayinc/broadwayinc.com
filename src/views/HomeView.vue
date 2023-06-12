@@ -1,27 +1,20 @@
 <template lang="pug">
 .shell
   .head
-    h2 broadway&nbsp;Inc.
-    hr
-    p.
-      If&nbsp;you&nbsp;can&nbsp;dream&nbsp;it, we&nbsp;know&nbsp;it's&nbsp;possible.
-      We&nbsp;also&nbsp;know&nbsp;what&nbsp;it&nbsp;takes to make your dreams&nbsp;a&nbsp;reality.
-      It requires more sacrifice than you'd expect.
-      You might hit a brick wall when your goal seems to be just within your grasp.
-      On&nbsp;top&nbsp;of&nbsp;that, there's also an element of luck to be involved.
-      Yet, we see these challenges as the beauty of your&nbsp;great&nbsp;journey, and we are eager to make&nbsp;it&nbsp;happen.
-    p(style="opacity:1;text-align:right") from&nbsp;the&nbsp;CEO - &nbsp;Baksa Gimm
     br
     br
-    h2 Our Services
+    h1(style="margin-bottom:0;font-size: 3em;") broadway&nbsp;Inc.
+    p(style="margin-top:0;") If&nbsp;you&nbsp;can&nbsp;imagine&nbsp;it, it's&nbsp;possible.
+    br
+    br
+    br
+    h3 Our Services
     hr
-    h2 Skapi: Backend&nbsp;API&nbsp;service
-    p.
-      Setting up a web service can be costly and time-consuming for businesses.
-      We see this as stifling innovation, especially for young startup entrepreneurs.
+    h2 Skapi: Frontend&nbsp;Driven BaaS&nbsp;service
     p.
       Skapi reimagines the backend development, providing a seamless experience with unparalleled simplicity.
-      Our Robust and highly accessible backend resources lets the developers focus solely on what truly matters: Building the next innovation
+      Our Robust and highly accessible APIs allow developers to focus solely on what truly matters:
+    p Building&nbsp;the&nbsp;next&nbsp;innovation
     div(style='text-align:right')
       a(href="https://www.skapi.com")
         img(style='height:2em;' src="@/assets/Skapi_logo.svg")
@@ -51,7 +44,7 @@ hr {
   opacity: 0.2;
 }
 
-h2 {
+h3,h2,h1 {
   font-weight: 300;
 }
 p{
