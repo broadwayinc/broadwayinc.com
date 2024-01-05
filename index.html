@@ -58,11 +58,20 @@ Hi, We are
   <p>
     Be the first to know about our new services, updates, and special offers.
   </p>
-  <form onsubmit="skapi.subscribeNewsletter(event).then(res => alert('Confirmation email has been sent'))">
-    <input class='input' type="email" name="email" placeholder='your@email.com' />
+  <form onsubmit="disableAllForms();skapi.subscribeNewsletter(event).then(res => alert(res.split(': ').slice(-1)))">
+    <script>
+      let disableAllForms = () => {
+        document.querySelectorAll('form').forEach(form => {
+          form.querySelectorAll('input').forEach(input => {
+            input.disabled = true;
+          })
+        })
+      }
+    </script>
+    <input class='input' type="email" name="email" placeholder='your@email.com' required />
     <input hidden name="redirect" value="/ns-subscribed.html" />
     <input hidden name="group" value="public" />
-    <input class='button default' type="submit" value="Subscribe" />
+    <input class='button' type="submit" value="Subscribe" />
   </form>
 </div>
 <br>
