@@ -27,4 +27,4 @@ coverage
 *.sln
 *.sw?
 package-lock.json
-deploy.sh
+deploy.py
