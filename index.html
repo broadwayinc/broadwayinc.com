@@ -1,18 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script>
+  const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
+</script>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-  <link rel="icon" href="/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <script type='module' src="https://cdn.jsdelivr.net/npm/skateui@latest/dist/skateui/skateui.esm.js"></script> -->
-  <title>broadway Inc.</title>
-</head>
+<div id="main">
+  Hi, We are
+  <h1 style="margin-top: 0;">broadway Inc.</h1>
+  <p>
+    At Broadway Inc., we specialize in creating backend web services.
+    <br>
+    Our mission is centered around simplicity and efficiency,
+    aiming to make backend technology accessible and user-friendly for a wide range of users.
+  </p>
+  <h2>What We've Built</h2>
+  <p>
+    Introducing <a href="https://www.skapi.com">Skapi</a>: A Backend API Library Designed for Frontend Developers.
+    <br>
+    Skapi is a versatile JavaScript library enabling you to create full-stack web applications straight from your HTML
+    code.
+    Say goodbye to the complexities of configuration, database design, and server deployment.
+    Skapi simplifies your development process, allowing you to focus on what you do best.
+  </p>
+  <h2>How It Works</h2>
+  <p>
+    Integrate Skapi into your HTML, and you're instantly connected to our robust backend services.
+    <br>
+    Skapi provides a comprehensive range of features – from CDN, databases, and email servers to storage and real-time
+    data,
+    all readily available and simple to use. By managing the backend intricacies, Skapi lets you concentrate on
+    crafting a dynamic frontend. Built on modern web technologies and AWS serverless infrastructure, Skapi not only
+    ensures the data security and safety but also scales seamlessly alongside your application’s growth.
+  </p>
+  <h2>Discover Skapi</h2>
+  <p>
+    Learn more and start building at <a href="https://www.skapi.com">www.skapi.com</a>.
+  </p>
+  <h2>Our Location</h2>
+  <p>
+    Visit us at 101-3302, 109 Mapo-daero, Mapo-gu, Seoul, 04146, Republic of Korea
+  </p>
+  <h2>Founder</h2>
+  <p>
+    Baksa Gimm
+    <br>
+    Find me on <a href="https://twitter.com/baksagimm" target="_blank">X</a> | <a
+      href="https://www.linkedin.com/in/baksa-gimm-94122877/" target="_blank">LinkedIn</a> | <a
+      href="https://www.instagram.com/baksagimm" target="_blank">Instagram</a>
+    <br>
+  </p>
+  <hr>
+  <div id="newsletter">
+    <h2>Subscribe to our Newsletter</h2>
+    <p>
+      Be the first to know about our new services, updates, and special offers.
+    </p>
+    <form onsubmit="skapi.subscribeNewsletter(event).then(res => alert('Confirmation email has been sent'))">
+      <input class='input' type="email" name="email" placeholder='your@email.com' />
+      <input hidden name="redirect" value="/ns-subscribed.html" />
+      <input hidden name="group" value="public" />
+      <input class='button default' type="submit" value="Subscribe" />
+    </form>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
 
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
-</body>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    box-sizing: border-box;
+  }
 
-</html>
+  #main {
+    max-width: 1000px;
+  }
+
+  #newsletter {
+    text-align: center;
+  }
+
+  form {
+    margin-top: 16px;
+  }
+
+  input {
+    margin-bottom: 8px;
+  }
+</style>
