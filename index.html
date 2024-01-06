@@ -68,10 +68,16 @@ Hi, We are
         })
       }
     </script>
-    <input class='input' type="email" name="email" placeholder='your@email.com' required />
+    
     <input hidden name="redirect" value="/ns-subscribed.html" />
     <input hidden name="group" value="public" />
-    <input class='button' type="submit" value="Subscribe" />
+
+    <span class="input-field">
+      <input type="email" name="email" placeholder='your@email.com' required /><span class="embed right">
+        <input class='button' type="submit" value="Subscribe" />
+      </span>
+      <span class="styler"></span>
+    </span>
   </form>
 </div>
 <br>
@@ -95,7 +101,7 @@ Hi, We are
     margin-top: 16px;
   }
 
-  input {
+  .input-field {
     margin-bottom: 8px;
   }
 </style>
