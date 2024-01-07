@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script src="../util.js"></script>
+<script>
+    const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
+</script>
+<div>
+    <h2>Login</h2>
+    <hr>
+    <form action="/admin/index.html" onsubmit="
+            document.getElementById('msg').textContent = '&nbsp;';
+            disableForm(this);
+            skapi.login(event).catch(err=>{
+                document.getElementById('msg').textContent = err.message;
+                enableForm(this);
+            })">
+        <div style="display: inline-block; text-align: left;">
+            <label>
+                <small>Email</small>
+                <br>
+                <span class="input-field">
+                    <input type="email" name="email" placeholder='your@email.com' required />
+                    <span class="styler"></span>
+                </span>
+            </label>
+
+            <label>
+                <small>Password</small>
+                <br>
+                <span class="input-field">
+                    <input type="password" name="password" placeholder='Password' required />
+                    <span class="styler"></span>
+                </span>
+            </label>
+            <div>
+                <small id="msg">&nbsp;</small>
+            </div>
+            <span class="input-field" style="margin-top:8px;float: right; background-color: transparent;">
+                <input type="submit" value="Login" />
+            </span>
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+<script>
+    skapi.getProfile().then(u => {
+        if (u) {
+            window.location.href = "/admin/index.html";
+        }
+    });
+</script>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    h2 {
+        margin: 0 0 8px;
+    }
+
+    label {
+        display: block;
+        text-align: left;
+        margin-bottom: 8px;
+    }
+
+    form {
+        text-align: center;
+    }
+
+    #msg {
+        color: var(--color-danger);
+    }
+</style>

@@ -15,6 +15,7 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    --color-danger: #f04e4e;
 }
 
 h1,
@@ -94,7 +95,7 @@ br {
 
 .input-field>input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
     height: var(--max-height);
-    padding: 0 0 0 16px;
+    padding: 0 2px 0 16px;
     font-size: 16px;
     border: none;
 }
@@ -108,6 +109,20 @@ br {
 .input-field>input:focus~.styler {
     outline: 1px solid rgb(0, 0, 0, 0.5);
     border: 1px solid black;
+}
+
+label {
+    display: inline-block;
+}
+
+.input-field>input[type="submit"],
+.input-field>button,
+.input-field>input[type="reset"],
+.input-field>input[type="button"] {
+    height: var(--max-height);
+    padding: 0 16px;
+    font-size: 16px;
+    /* border: none; */
 }
 
 /* @media (max-width: 1200px) {

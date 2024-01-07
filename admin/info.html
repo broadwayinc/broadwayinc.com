@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script>
+    const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
+</script>
+<div>
+    <h1 style='margin:0;line-height: 0;' id="loading"></h1>
+    <div id="info" hidden style="padding: 2rem 0">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2 style="margin: 0;">Skapi Information</h2>
+            <a style='margin: 0;' href="/admin/index.html">Back to Menu</a>
+        </div>
+        <hr>
+        <table>
+            <tr>
+                <td><strong>Admin email</strong></td>
+                <td>%email%</td>
+            </tr>
+            <tr>
+                <td><strong>User count</strong></td>
+                <td>%users%</td>
+            </tr>
+            <tr>
+                <td><strong>Newsletter subscribers</strong></td>
+                <td>%newsletter_subscribers%</td>
+            </tr>
+            <tr>
+                <td><strong>Serviceletter subscribers</strong></td>
+                <td>%serviceletter_subscribers_01%</td>
+            </tr>
+            <tr>
+                <td><strong>Serviceletter</strong></td>
+                <td>
+                    <a href="mailto:us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com">
+                        us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Newsletter</strong></td>
+                <td>
+                    <a href="mailto:us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com">
+                        us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+        <h4 style="margin-top: 0">Welcome Email</h4>
+        <hr>
+        <p>
+            The user receives this email when they signup, and have successfully verified their email, and logged in for
+            the first time.
+        </p>
+        <table>
+            <tr>
+                <td><strong>Endpoint</strong></td>
+                <td>
+                    <a href="mailto:us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com">
+                        us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Subject</strong></td>
+                <td>%template_welcome%</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's name (or email)</strong></td>
+                <td>${name}</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's name</strong></td>
+                <td>${name}</td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+        <h4 style="margin-top: 0">Signup Confirmation Email</h4>
+        <hr>
+        <p>
+            The user receives this email when they are requested for confirmation on signup.
+        </p>
+        <table>
+            <tr>
+                <td><strong>Endpoint</strong></td>
+                <td>
+                    <a href="mailto:us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com">
+                        us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Subject</strong></td>
+                <td>%template_confirmation%</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's email</strong></td>
+                <td>${email}</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's name (or email)</strong></td>
+                <td>${name}</td>
+            </tr>
+            <tr>
+                <td><strong>Confirmation link (Required)</strong></td>
+                <td>${link}</td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+        <h4 style="margin-top: 0">Verification Email</h4>
+        <hr>
+        <p>
+            The user receives this email when they verifes their email or when they request forgot password.
+        </p>
+        <table>
+            <tr>
+                <td><strong>Endpoint</strong></td>
+                <td>
+                    <a href="mailto:us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com">
+                        us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Subject</strong></td>
+                <td>%template_verification%</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's email</strong></td>
+                <td>${email}</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's name (or email)</strong></td>
+                <td>${name}</td>
+            </tr>
+            <tr>
+                <td><strong>Verification code (Required)</strong></td>
+                <td>${code}</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+
+        <h4 style="margin-top: 0">Invitaion Email</h4>
+        <hr>
+        <p>
+            The user receives this email when they are invited to the service.
+        </p>
+        <table>
+            <tr>
+                <td><strong>Endpoint</strong></td>
+                <td>
+                    <a href="mailto:us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com">
+                        us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Subject</strong></td>
+                <td>%template_invitation%</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's login email (Required)</strong></td>
+                <td>${email}</td>
+            </tr>
+            <tr>
+                <td><strong>Receiver's name (or email)</strong></td>
+                <td>${name}</td>
+            </tr>
+            <tr>
+                <td><strong>Login password (Required)</strong></td>
+                <td>${password}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    // let email = {
+    //     'invitation e-mail': 'us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com',
+    //     'newsletter subscription e-mail': 'us31zettahertzesskpi-tp32335060dea3ba2082b588bfa4302df1@mail.skapi.com',
+    //     'signup confirmation e-mail': 'us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com',
+    //     'verification e-mail': 'us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com',
+    //     'welcome e-mail': 'us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com',
+    //     'public newsletter': 'us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com',
+    //     'service newsletter': 'us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com',
+    //     'newsletters for invited users': 'us31zettahertzesskpi-02dea1790c7e9d9f69f2f23c245e6b8847@mail.skapi.com'
+    // }
+    // loading...
+    let intervalId;
+    let text_array = [".", "..", "...", ""];
+    let loading_text = document.getElementById("loading");
+    let index = 0;
+
+    intervalId = setInterval(() => {
+        loading_text.textContent = text_array[index];
+        index = (index + 1) % text_array.length;
+    }, 1000);
+
+
+    skapi.getProfile().then(u => {
+        if (!u) {
+            window.location.href = "/admin/login.html";
+        }
+    })
+
+    function completeLoading() {
+        clearInterval(intervalId);
+        document.getElementById("loading").hidden = true;
+        document.getElementById("info").hidden = false;
+    }
+
+    skapi.secureRequest({
+        url: "http://seoul.broadwayinc.computer:3000/info",
+    }).then(r => {
+        console.log(r);
+
+        let keys = [
+            "users",
+            "newsletter_subscribers",
+            "serviceletter_subscribers_01",
+            "email"
+        ];
+        for (let key of keys) {
+            document.getElementById("info").innerHTML = document.getElementById("info").innerHTML.replace(`%${key}%`, r.response[key]);
+        }
+        let templates = [
+            "template_welcome",
+            "template_confirmation",
+            "template_verification",
+            "template_invitation"
+        ];
+
+        function composeLink(link, subject) {
+            return `<a href="${link}">${subject}</a>`;
+        }
+
+        for (let template of templates) {
+            document.getElementById("info").innerHTML = document.getElementById("info").innerHTML.replace(`%${template}%`, composeLink(r.response[template].url, r.response[template].subject));
+        }
+
+        completeLoading();
+    })
+
+</script>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    #main {
+        max-width: 1000px;
+    }
+
+    h2 {
+        margin-bottom: 8px;
+    }
+
+    td {
+        padding: 4px;
+    }
+
+    td:last-child {
+        word-break: break-all;
+    }
+
+    strong {
+        font-weight: 400;
+    }
+
+    h4 {
+        margin: 0;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    tr:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+</style>

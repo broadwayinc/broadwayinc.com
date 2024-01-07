@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script>
+    const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
+</script>
+<div id="main">
+    <div id="info" hidden style="padding: 0">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2 style="margin: 0;">User List</h2>
+            <a style='margin: 0;' href="/admin/index.html">Back to Menu</a>
+        </div>
+        <hr>
+        <div class="table-container">
+            <table id="userdata">
+                <tr>
+                    <th>email_admin</th>
+                    <th>active_services</th>
+                    <th>email_verified</th>
+                    <th>approved</th>
+                    <th>locale</th>
+                    <th>user_id</th>
+                    <th>access_group</th>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <span class="input-field" style="margin-top:8px;background-color: transparent;">
+                <button onclick='listUsers()' disabled>Show More</button>
+            </span>
+        </div>
+    </div>
+    <h1 style='margin:0;line-height: 0;text-align: center;' id="loading"></h1>
+</div>
+<script>
+    // loading...
+    let intervalId;
+    function loader() {
+        document.getElementById('loading').hidden = false;
+        let text_array = [".", "..", "...", ""];
+        let loading_text = document.getElementById("loading");
+        let index = 0;
+
+        intervalId = setInterval(() => {
+            loading_text.textContent = text_array[index];
+            index = (index + 1) % text_array.length;
+        }, 1000);
+    }
+
+
+    skapi.getProfile().then(u => {
+        if (!u) {
+            window.location.href = "/admin/login.html";
+        }
+    })
+
+    function completeLoading() {
+        clearInterval(intervalId);
+        document.getElementById('loading').hidden = true;
+        document.getElementById('loading').innerHTML = "";
+        document.getElementById("info").hidden = false;
+    }
+
+    let more = null;
+
+    function listUsers() {
+        loader();
+        document.querySelector('#info button').disabled = true;
+
+        return skapi.secureRequest({
+            url: "http://seoul.broadwayinc.computer:3000/list-users",
+            data: {
+                more
+            }
+        }).then(r => {
+            console.log(r);
+            more = r.response.LastEvaluatedKey;
+            let userdataTable = document.getElementById("userdata");
+
+            for (let data of r.response.Items) {
+                let row = userdataTable.insertRow();
+
+                let keys = [
+                    'email_admin',
+                    'active_services',
+                    'email_verified',
+                    'approved',
+                    'locale',
+                    'user_id',
+                    'access_group'
+                ]
+                for (let key of keys) {
+                    let cell = row.insertCell();
+                    cell.textContent = data[key];
+                }
+            }
+        }).finally(() => {
+            completeLoading();
+            if (more) {
+                document.querySelector('#info button').disabled = false;
+            } else {
+                document.querySelector('#info button').disabled = true;
+            }
+        });
+    }
+
+    listUsers();
+
+</script>
+<style>
+    #main {
+        max-width: 1440px;
+        margin: auto;
+        padding: 4rem 0;
+    }
+
+    h2 {
+        margin-bottom: 8px;
+    }
+
+    td {
+        padding: 4px;
+        white-space: pre;
+    }
+
+    strong {
+        font-weight: 400;
+    }
+
+    h4 {
+        margin: 0;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    tr:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    th {
+        font-weight: 400;
+        padding: 4px;
+    }
+
+    .table-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+</style>
