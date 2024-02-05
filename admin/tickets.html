@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-init-css@latest/init.css">
+<link rel="stylesheet" href="../style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@beta/dist/skapi.js"></script>
+<script>
+    const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", {autoLogin: true}, {"hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir"});
+</script>
+
+<br>
+<br>
+
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <h2 style="margin: 0;">Tickets</h2>
+    <a style='margin: 0;' href="/admin/index.html">Back to Menu</a>
+</div>
+<hr>
+<p>
+    Tickets can be registered to provide service tier subscriptions.
+    <br>
+    (Only Baksa can register tickets.)
+</p>
+<p>
+    Group numbers are used to categorize service tiers:
+    <br>
+<ul>
+    <li>1: Trial</li>
+    <li>2: Standard</li>
+    <li>3: Premium</li>
+    <li>50: Unlimited</li>
+    <li>51: Free Standard</li>
+</ul>
+</p>
+<hr>
+<h2>Register Tickets</h2>
+<form onsubmit="registerTicket(event)">
+    <table id="reg_form">
+        <style>
+            #reg_form {
+                text-align: left;
+                width: 100%;
+            }
+
+            #reg_form tr td:first-child {
+                padding: 4px;
+                width: 186px;
+            }
+
+            #reg_form tr td input:not([type="submit"]) {
+                width: 100%;
+            }
+        </style>
+        <tr>
+            <td>
+                Ticket ID&nbsp;
+            </td>
+            <td>
+                <input type="text" id="ticket_id" placeholder="Ticket ID">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Description&nbsp;
+            </td>
+            <td>
+                <input type="text" id="desc" placeholder="Description">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Service Group&nbsp;
+            </td>
+            <td>
+                <input type="number" id="group" placeholder="Group Number">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Stripe Client Secret&nbsp;
+            </td>
+            <td>
+                <input type="text" id="secret" placeholder="Client Secret">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="float:right;">
+                <input type="submit" value="Register">
+            </td>
+        </tr>
+    </table>
+</form>
+<hr>
+<h2>Registered Tickets</h2>
+<div id="list_wrap">
+    <style>
+        #list_wrap {
+            overflow-x: auto;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        #registered_tickets {
+            text-align: left;
+        }
+
+        #registered_tickets tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        #registered_tickets th {
+            font-weight: 400;
+            padding: 4px;
+        }
+
+        #registered_tickets td {
+            padding: 4px;
+            white-space: pre;
+        }
+    </style>
+    <table id="registered_tickets">
+        <tr>
+            <th></th>
+            <th>Ticket ID</th>
+            <th>Description</th>
+            <th>Service Group</th>
+            <th>Request Authorization</th>
+        </tr>
+    </table>
+</div>
+<br>
+<br>
+
+<script>
+    skapi.getProfile().then(u => console.log(u));
+
+    skapi.getTickets({
+        service: 'eu71zettahertzesskpi'
+    }).then(tickets => {
+        console.log(tickets);
+        for (let t of tickets.list) {
+            let service_group = t.action.update_service.group;
+            let request_authorization = t.condition.request.headers.Authorization;
+            let description = t.desc;
+            let timestamp = t.stmp;
+            let ticket_id = t.ticket_id;
+            let row = /*html*/`
+                <td><button onclick="delete_ticket('${ticket_id}')">Delete</button></td>
+                <td>${ticket_id}</td>
+                <td>${description}</td>
+                <td>${service_group}</td>
+                <td>${request_authorization}</td>`;
+            let tr = document.createElement('tr');
+            tr.id = ticket_id;
+            tr.innerHTML = row;
+            registered_tickets.appendChild(tr);
+        }
+    });
+
+    function delete_ticket(ticket_id) {
+        document.getElementById(ticket_id).remove();
+        skapi.unregisterTicket({
+            service: 'eu71zettahertzesskpi',
+            ticket_id
+        }).then(res => console.log(res));
+    }
+
+    function registerTicket(event) {
+        event.preventDefault();
+        const desc = document.getElementById('desc').value;
+        const group = document.getElementById('group').value;
+        // serviceId: string,
+        // params: {
+        //     ticket_id: string;
+        //     condition?: {
+        //         user?: {
+        //             [key: string]: {
+        //                 value: string;
+        //                 operator: 'gt' | 'gte' | 'lt' | 'lte' | 'eq' | 'ne' | '>' | '>=' | '<' | '<=' | '=' | '!=';
+        //             };
+        //         },
+        //         record_access?: string; // record id user should have access to
+        //         request?: {
+        //             url: string;
+        //             method: 'GET' | 'POST';
+        //             headers?: {
+        //                 [key: string]: string;
+        //             };
+        //             data?: Record<string, any>;
+        //             params?: Record<string, any>;
+        //             match: {
+        //                 target_key: string; // key.to.match
+        //                 operator: 'gt' | 'gte' | 'lt' | 'lte' | 'eq' | 'ne' | '>' | '>=' | '<' | '<=' | '=' | '!=';
+        //                 value: string;
+        //             }[];
+        //         }
+        //     };
+        //     action?: {
+        //         access_group: number; // group number to give access to the user
+        //         record_access?: string; // record id to give access to the user
+        //         request?: {
+        //             url: string;
+        //             method: 'GET' | 'POST';
+        //             headers?: {
+        //                 [key: string]: string;
+        //             };
+        //             data?: Record<string, any>;
+        //             params?: Record<string, any>;
+        //         },
+        //         upgrade_service?: number; // only admin
+        //     };
+        //     desc: string;
+        //     count?: number;
+        //     time_to_live?: number;
+        // }
+
+        let product = {
+            trial: 'price_1OeZQiHfHjKTnB39dWTj24Xl',
+            standard: 'price_1OUCt6HfHjKTnB39IwJasJEy',
+            premium: 'price_1OeZSqHfHjKTnB395Ai9fY4m'
+        }
+
+        let tid = document.getElementById('ticket_id').value;
+        skapi.registerTicket({
+            service: 'eu71zettahertzesskpi',
+            ticket_id: tid + '.delete',
+            condition: {
+                request: {
+                    url: 'https://api.stripe.com/v1/subscriptions/$SUBSCRIPTION_ID',
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${document.getElementById('secret').value}`
+                    },
+                }
+            },
+            action: {
+                update_service: { group: parseInt(group), action: -1 }
+            },
+            desc
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            alert(err.message);
+        });
+
+        skapi.registerTicket({
+            service: 'eu71zettahertzesskpi',
+            ticket_id: tid,
+            condition: {
+                request: {
+                    url: 'https://api.stripe.com/v1/subscriptions/$SUBSCRIPTION_ID',
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${document.getElementById('secret').value}`
+                    },
+                    match: [
+                        {
+                            target_key: 'metadata.service',
+                            operator: '=',
+                            value: '$SERVICE_ID'
+                        },
+                        {
+                            target_key: 'plan.id',
+                            operator: '=',
+                            value: product[tid]
+                        },
+                    ]
+                }
+            },
+            action: {
+                update_service: { group: parseInt(group), action: 1 }
+            },
+            desc
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            alert(err.message);
+        });
+    }
+</script>
+<style>
+    body {
+        max-width: 1000px;
+        margin: auto;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+</style>

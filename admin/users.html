@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-init-css@latest/init.css">
 <link rel="stylesheet" href="../style.css">
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+
 <script>
     const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
 </script>
@@ -46,7 +48,7 @@
         intervalId = setInterval(() => {
             loading_text.textContent = text_array[index];
             index = (index + 1) % text_array.length;
-        }, 1000);
+        }, 250);
     }
 
 
@@ -120,11 +122,6 @@
         margin-bottom: 8px;
     }
 
-    td {
-        padding: 4px;
-        white-space: pre;
-    }
-
     strong {
         font-weight: 400;
     }
@@ -144,6 +141,11 @@
     th {
         font-weight: 400;
         padding: 4px;
+    }
+
+    td {
+        padding: 4px;
+        white-space: pre;
     }
 
     .table-container {
