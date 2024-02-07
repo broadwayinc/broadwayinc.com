@@ -8,61 +8,46 @@
 <script>
     const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
 </script>
-<div>
-    <h1 style='margin:0;line-height: 0;' id="loading"></h1>
-    <div id="menu" hidden>
-        <h2 style="margin: 0">Skapi Admin Page</h2>
-        <ul>
-            <li>
-                <a href="/admin/info.html">Skapi Information</a>
-            </li>
-            <li>
-                <a href="/admin/users.html">User List</a>
-            </li>
-            <li>
-                <a href="/admin/deploy.html">Deploy Website</a>
-            </li>
-            <li>
-                <a href="/admin/tickets.html">Tickets</a>
-            </li>
-            <li>
-                <a href="/pp/skapi.html">Privacy Policy</a>
-            </li>
-        </ul>
-    </div>
-</div>
+<main id="menu" hidden>
+    <h2 style="margin: 0">Skapi Admin Page</h2>
+    <ul>
+        <li>
+            <a href="/admin/info.html">Skapi Information</a>
+        </li>
+        <li>
+            <a href="/admin/users.html">User List</a>
+        </li>
+        <li>
+            <a href="/admin/deploy.html">Deploy Website</a>
+        </li>
+        <li>
+            <a href="/admin/tickets.html">Tickets</a>
+        </li>
+        <li>
+            <a href="/pp/skapi.html">Skapi Privacy Policy</a>
+        </li>
+        <br>
+        <li>
+            <a href="/admin/change-password.html">Change Password</a>
+        </li>
+        <li>
+            <a href="/admin/index.html" onclick="logout(event);">Logout</a>
+        </li>
+    </ul>
+</main>
 <script>
-    // loading...
-    let intervalId;
-    let text_array = [".", "..", "...", ""];
-    let loading_text = document.getElementById("loading");
-    let index = 0;
-
-    intervalId = setInterval(() => {
-        loading_text.textContent = text_array[index];
-        index = (index + 1) % text_array.length;
-    }, 250);
-
+    function logout(e) {
+        e.preventDefault();
+        skapi.logout().then(() => {
+            window.location.href = "/admin/login.html";
+        });
+    }
 
     skapi.getProfile().then(u => {
         if (!u) {
             window.location.href = "/admin/login.html";
+            return;
         }
-        clearInterval(intervalId);
-        document.getElementById("loading").hidden = true;
         document.getElementById("menu").hidden = false;
     })
 </script>
-<style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 8px;
-        box-sizing: border-box;
-    }
-
-    #menu {
-        max-width: 1000px;
-    }
-</style>

@@ -9,3 +9,22 @@ function enableForm(form) {
         input.disabled = false;
     })
 }
+
+let _loaderId;
+function runLoader(loading_text_el){
+    let text_array = [".", "..", "...", ""];
+    let index = 0;
+    loading_text_el.hidden = false;
+    _loaderId = setInterval(() => {
+        loading_text_el.textContent = text_array[index];
+        index = (index + 1) % text_array.length;
+    }, 250);
+}
+
+function stopLoader(loading_text_el, callback) {
+    clearInterval(_loaderId);
+    loading_text_el.hidden = true;
+    if(typeof callback === "function") {
+        callback();
+    }
+}

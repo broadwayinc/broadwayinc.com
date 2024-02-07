@@ -1,84 +1,18 @@
-@font-face {
-    font-family: 'Avenir';
-    src: url('/fonts/Avenir.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
 body {
-    margin: 0;
     background-color: whitesmoke;
-    font-family: 'Avenir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --color-danger: #f04e4e;
-}
 
-.input-field {
-    --max-height: calc(40px - 2px);
-    display: inline-block;
-    background-color: white;
-    position: relative !important;
-}
-
-.input-field>* {
-    vertical-align: middle;
-    display: inline-block;
-    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
     box-sizing: border-box;
 }
-
-.input-field>.embed {
-    height: var(--max-height);
-    display: inline-flex;
-    padding: 4px;
-}
-
-.input-field>.embed>* {
-    max-height: 100%;
-}
-
-.input-field>.styler {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-.input-field>input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
-    height: var(--max-height);
-    padding: 0 2px 0 16px;
-    font-size: 16px;
-    border: none;
-}
-
-.input-field>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
-    outline: none;
-    border: none;
-    box-shadow: none;
-}
-
-.input-field>input:focus~.styler {
-    outline: 1px solid rgb(0, 0, 0, 0.5);
-    border: 1px solid black;
-}
-
-label {
-    display: inline-block;
-}
-
 
 html {
     font-size: 20px;
 }
-
-/* @media (max-width: 1200px) {
-    html {
-        font-size: 20px;
-    }
-} */
 
 @media (max-width: 992px) {
     html {
