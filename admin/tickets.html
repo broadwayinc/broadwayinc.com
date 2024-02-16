@@ -33,9 +33,9 @@
 
 <br>
 
-<h2>Register Tickets</h2>
+<button onclick="registerTicket()">Register Ticket</button>
 <hr>
-<form onsubmit="registerTicket(event)">
+<!-- <form onsubmit="registerTicket(event)">
     <table id="reg_form">
         <style>
             #reg_form {
@@ -70,10 +70,10 @@
         </tr>
         <tr>
             <td>
-                Service Group&nbsp;
+                Action&nbsp;
             </td>
             <td>
-                <input type="number" id="group" placeholder="Group Number">
+                <input type="number" id="action" placeholder="Action Number">
             </td>
         </tr>
         <tr>
@@ -91,7 +91,7 @@
             </td>
         </tr>
     </table>
-</form>
+</form> -->
 
 <br>
 
@@ -122,8 +122,6 @@
             <th>-</th>
             <th>Ticket ID</th>
             <th>Description</th>
-            <th>Service Group</th>
-            <th>Request Authorization</th>
             <style>
                 th {
                     font-weight: bold;
@@ -168,18 +166,14 @@
     }).then(tickets => {
         console.log(tickets);
         for (let t of tickets.list) {
-            let service_group = t.action.update_service.group;
-            let request_authorization = t.condition.request.headers.Authorization;
-            let description = t.desc;
-            let timestamp = t.stmp;
+            let description = t.description;
+            let timestamp = t.timestamp;
             let ticket_id = t.ticket_id;
             let row = /*html*/`
                 <td><button onclick="delete_ticket('${ticket_id}')">Delete</button></td>
                 <td><button onclick="list_consumed('${ticket_id}')">Consumed</button></td>
                 <td>${ticket_id}</td>
-                <td>${description}</td>
-                <td>${service_group}</td>
-                <td>${request_authorization}</td>`;
+                <td>${description}</td>`;
             let tr = document.createElement('tr');
             tr.id = ticket_id;
             tr.innerHTML = row;
@@ -202,8 +196,6 @@
                 <tr>
                     <th>Time</th>
                     <th>User</th>
-                    <th>Service</th>
-                    <th>Subscription</th>
                 </tr>`;
             currentConsumeDisplay = ticket_id;
         }
@@ -216,16 +208,12 @@
             currentConsumeDisplay = ticket_id;
             for (let t of tickets.list) {
                 let user_id = t.user_id;
-                let timestamp = t.stmp;
-                let subscription_id = t.placeholder.SUBSCRIPTION_ID;
-                let service_id = t.placeholder.SERVICE_ID;
-
+                let timestamp = t.timestamp;
+                let date = new Date(timestamp).toLocaleString().split(' GMT')[0];
                 let row = /*html*/`
-                    <td>${Date(timestamp).toLocaleString().split(' GMT')[0]}</td>
-                    <td>${user_id}</td>
-                    <td>${service_id}</td>
-                    <td>${subscription_id}</td>
-                    `;
+                    <td>${date}</td>
+                    <td>${user_id}</td>`;
+
                 let tr = document.createElement('tr');
                 tr.innerHTML = row;
                 consumed_tickets.appendChild(tr);
@@ -233,57 +221,75 @@
         });
     }
 
-    function registerTicket(event) {
-        event.preventDefault();
-        const desc = document.getElementById('desc').value;
-        const group = document.getElementById('group').value;
+    let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m'];
+    let setValueWhenMatch = [2, 3];
 
-        let product = {
-            standard: 'price_1OUCt6HfHjKTnB39IwJasJEy',
-            premium: 'price_1OeZSqHfHjKTnB395Ai9fY4m'
-        }
-
-        let tid = document.getElementById('ticket_id').value;
-        let srvc_grp = parseInt(group); // 0 is delete
-
-        let match = [
-            {
-                target_key: 'metadata.service',
-                operator: '=',
-                value: '$SERVICE_ID'
-            }
-        ];
-
-        let request = {
-            url: 'https://api.stripe.com/v1/subscriptions/$SUBSCRIPTION_ID',
-            method: srvc_grp ? 'GET' : 'DELETE',
-            headers: {
-                Authorization: `Bearer ${document.getElementById('secret').value}`
-            },
-            match
-        };
-
-        if (product[tid]) {
-            request.match.push({
-                target_key: 'plan.id',
-                operator: '=',
-                value: product[tid]
-            });
-        }
-        else if (!srvc_grp) {
-            request.params = {
-                prorate: true
-            }
-        }
-
+    function registerTicket() {
         skapi.registerTicket({
             service: 'eu71zettahertzesskpi',
-            ticket_id: tid,
-            condition: {request},
-            action: {
-                update_service: {group: srvc_grp, action: 1}
+            ticket_id: 'cancel-plan',
+            placeholder: {
+                SERVICE_ID: 'data[object][metadata][service]',
+                SUBSCRIPTION_ID: 'data[object][id]',
+                OWNER_ID: 'data[object][metadata][owner]',
             },
-            desc
+            condition: {
+                method: 'post',
+                data: [
+                    {
+                        key: 'data[object][plan][id]',
+                        value,
+                        operator: '=',
+                        setValueWhenMatch
+                    }
+                ]
+            },
+            action: {
+                update_service: {
+                    action: -1,
+                    group: 'data[object][plan][id]',
+                    sub_item: 'data[object][items][data][0][id]'
+                }
+            },
+            description: 'Cancel subscription plan'
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            alert(err.message);
+        });
+        skapi.registerTicket({
+            service: 'eu71zettahertzesskpi',
+            ticket_id: 'subscribe-plan',
+            placeholder: {
+                SERVICE_ID: 'data[object][metadata][service]',
+                SUBSCRIPTION_ID: 'data[object][id]',
+                OWNER_ID: 'data[object][metadata][owner]',
+            },
+            condition: {
+                method: 'post',
+                data: [
+                    {
+                        key: 'data[object][plan][id]',
+                        value,
+                        operator: '=',
+                        setValueWhenMatch
+                    },
+                    {
+                        key: 'data[object][status]',
+                        value: ['active', 'incomplete_expired'],
+                        operator: '=',
+                        setValueWhenMatch: [1, -1]
+                    }
+                ]
+            },
+            action: {
+                update_service: {
+                    action: 1,
+                    group: 'data[object][plan][id]',
+                    sub_item: 'data[object][items][data][0][id]'
+                }
+            },
+            description: 'Subscribe to a plan'
         }).then(res => {
             console.log(res);
         }).catch(err => {
