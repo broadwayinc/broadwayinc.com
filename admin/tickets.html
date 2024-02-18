@@ -3,10 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-init-css@latest/init.css">
 <link rel="stylesheet" href="../style.css">
-
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@beta/dist/skapi.js"></script>
 <script>
-    const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", {autoLogin: true}, {"hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir"});
+    const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
 </script>
 
 <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -35,63 +34,6 @@
 
 <button onclick="registerTicket()">Register Ticket</button>
 <hr>
-<!-- <form onsubmit="registerTicket(event)">
-    <table id="reg_form">
-        <style>
-            #reg_form {
-                text-align: left;
-                width: 100%;
-            }
-
-            #reg_form tr td:first-child {
-                padding: 4px;
-                width: 200px;
-            }
-
-            #reg_form tr td input:not([type="submit"]) {
-                width: 100%;
-            }
-        </style>
-        <tr>
-            <td>
-                Ticket ID&nbsp;
-            </td>
-            <td>
-                <input type="text" id="ticket_id" placeholder="Ticket ID">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Description&nbsp;
-            </td>
-            <td>
-                <input type="text" id="desc" placeholder="Description">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Action&nbsp;
-            </td>
-            <td>
-                <input type="number" id="action" placeholder="Action Number">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Stripe Client Secret&nbsp;
-            </td>
-            <td>
-                <input type="text" id="secret" placeholder="Client Secret">
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="float:right;">
-                <input type="submit" value="Register">
-            </td>
-        </tr>
-    </table>
-</form> -->
 
 <br>
 
@@ -162,7 +104,7 @@
     skapi.getProfile().then(u => console.log(u));
 
     skapi.getTickets({
-        service: 'eu71zettahertzesskpi'
+        service: 'us31zettahertzesskpi'
     }).then(tickets => {
         console.log(tickets);
         for (let t of tickets.list) {
@@ -184,7 +126,7 @@
     function delete_ticket(ticket_id) {
         document.getElementById(ticket_id).remove();
         skapi.unregisterTicket({
-            service: 'eu71zettahertzesskpi',
+            service: 'us31zettahertzesskpi',
             ticket_id
         }).then(res => console.log(res));
     }
@@ -201,7 +143,7 @@
         }
 
         skapi.getTickets({
-            service: 'eu71zettahertzesskpi',
+            service: 'us31zettahertzesskpi',
             ticket_id: '#' + ticket_id + '#'
         }).then(tickets => {
             console.log(tickets);
@@ -221,12 +163,14 @@
         });
     }
 
-    let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m'];
+    // let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m'];
+    let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj'];
     let setValueWhenMatch = [2, 3];
-
+    // us31zettahertzesskpi
+    // eu71zettahertzesskpi
     function registerTicket() {
         skapi.registerTicket({
-            service: 'eu71zettahertzesskpi',
+            service: 'us31zettahertzesskpi',
             ticket_id: 'cancel-plan',
             placeholder: {
                 SERVICE_ID: 'data[object][metadata][service]',
@@ -258,7 +202,7 @@
             alert(err.message);
         });
         skapi.registerTicket({
-            service: 'eu71zettahertzesskpi',
+            service: 'us31zettahertzesskpi',
             ticket_id: 'subscribe-plan',
             placeholder: {
                 SERVICE_ID: 'data[object][metadata][service]',
@@ -266,6 +210,7 @@
                 OWNER_ID: 'data[object][metadata][owner]',
             },
             condition: {
+                bypassConditionMismatch: true,
                 method: 'post',
                 data: [
                     {
@@ -278,13 +223,13 @@
                         key: 'data[object][status]',
                         value: ['active', 'incomplete_expired'],
                         operator: '=',
-                        setValueWhenMatch: [1, -1]
+                        setValueWhenMatch: [1, -1],
                     }
                 ]
             },
             action: {
                 update_service: {
-                    action: 1,
+                    action: 'data[object][status]',
                     group: 'data[object][plan][id]',
                     sub_item: 'data[object][items][data][0][id]'
                 }
