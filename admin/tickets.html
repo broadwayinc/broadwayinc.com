@@ -171,7 +171,7 @@
     function registerTicket() {
         skapi.registerTicket({
             service: 'us31zettahertzesskpi',
-            ticket_id: 'cancel-plan',
+            ticket_id: 'delete-plan',
             placeholder: {
                 SERVICE_ID: 'data[object][metadata][service]',
                 SUBSCRIPTION_ID: 'data[object][id]',
@@ -195,7 +195,7 @@
                     sub_item: 'data[object][items][data][0][id]'
                 }
             },
-            description: 'Cancel subscription plan'
+            description: 'Subscription plan deleted.'
         }).then(res => {
             console.log(res);
         }).catch(err => {
@@ -234,7 +234,7 @@
                     sub_item: 'data[object][items][data][0][id]'
                 }
             },
-            description: 'Subscribe to a plan'
+            description: 'Subscribed to a plan.'
         }).then(res => {
             console.log(res);
         }).catch(err => {
