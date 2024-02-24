@@ -3,14 +3,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-init-css@latest/init.css">
 <link rel="stylesheet" href="../style.css">
+<script src="tickets.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
-<script>
+<!-- <script>
     const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
-</script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/skapi-js@beta/dist/skapi.js"></script>
+</script> -->
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@beta/dist/skapi.js"></script>
 <script>
     const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", {autoLogin: true}, {"hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir"});
-</script> -->
+</script>
 <div style="display: flex; align-items: center; justify-content: space-between;">
     <h2>Tickets</h2>
     <a href="/admin/index.html">Back</a>
@@ -35,18 +36,455 @@
 
 <br>
 
-<button onclick="registerTicket()">Register Ticket</button>
+<!-- <button onclick="registerTicket()">Register Ticket</button> -->
 <hr>
 
-<br>
+<h2>Register Ticket</h2>
+
+<div class="table_wrap">
+    <form onsubmit="registerTicket(event)">
+        <table id="params">
+            <tr>
+                <td>
+                    service
+                </td>
+                <td>
+                    <input type="text" name="service" value="eu71zettahertzesskpi" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ticket_id
+                </td>
+                <td>
+                    <input type="text" name="ticket_id" placeholder="Unique name for ticket ID" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    description
+                </td>
+                <td>
+                    <input type="text" name="description" placeholder="Description of the ticket" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    count
+                </td>
+                <td>
+                    <input type="number" name="count" min="0" placeholder="Infinite" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    time_to_live
+                </td>
+                <td>
+                    <input type="datetime-local" name="time_to_live" />
+                </td>
+            </tr>
+            <tr>
+                <style>
+                    .baseline {
+                        vertical-align: baseline;
+                    }
+
+                    #params td {
+                        background-color: rgba(0, 0, 0, 0.05);
+                        padding: 8px;
+                    }
+
+                    #params table {
+                        width: 100%;
+                    }
+
+                    #params input[type="text"],
+                    #params input[type="number"],
+                    #params input[type="datetime-local"] {
+                        width: 100%;
+                    }
+
+                    table:not(:last-child) {
+                        margin-bottom: 8px;
+                    }
+                </style>
+                <td class="baseline">
+                    condition
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>bypassConditionMismatch</td>
+                            <td><input type="checkbox" name="condition[bypassConditionMismatch]" value="true" /></td>
+                        </tr>
+                        <tr>
+                            <td>method</td>
+                            <td>
+                                <select name="condition[method]">
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">ip</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>value</td>
+                                        <td><input type="text" name="condition[ip][value]"
+                                                placeholder="xxx.xxx.xxx.xxx" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>operator</td>
+                                        <td>
+                                            <select name="condition[ip][operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">
+                                                    << /option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">
+                                                    <=< /option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">user_agent</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>value</td>
+                                        <td><input type="text" name="condition[user_agent][value]"
+                                                placeholder="Expected user agent value" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>operator</td>
+                                        <td>
+                                            <select name="condition[user_agent][operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">
+                                                    << /option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">
+                                                    <=< /option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">headers</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>key</td>
+                                        <td><input type="text" name="condition[headers][key]"
+                                                placeholder="Key name of header to match" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>value</td>
+                                        <td><input type="text" name="condition[headers][value]"
+                                                placeholder="Expected value" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>operator</td>
+                                        <td>
+                                            <select name="condition[headers][operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">
+                                                    << /option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">
+                                                    <=< /option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button onclick="addMore(event, 'condition[header]')" type="button">Add More</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">data</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>key</td>
+                                        <td><input type="text" name="condition[data][key]"
+                                                placeholder="key[to][match]" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>value</td>
+                                        <td><input type="text" name="condition[data][value]"
+                                                placeholder="Value to match" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>operator</td>
+                                        <td>
+                                            <select name="condition[data][operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">
+                                                    << /option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">
+                                                    <=< /option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>setValueWhenMatch</td>
+                                        <td>
+                                            <input type='text' name="condition[data][setValueWhenMatch]">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ignoreMismatch</td>
+                                        <td>
+                                            <input type='checkbox' name="condition[data][ignoreMismatch]">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button onclick="addMore(event, 'condition[data]', true)" type="button">Add
+                                    More</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">user</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>key</td>
+                                        <td><input type="text" name="condition[user][key]"
+                                                placeholder="User attribute name" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>value</td>
+                                        <td><input type="text" name="condition[user][value]"
+                                                placeholder="Expected attribute value" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>operator</td>
+                                        <td>
+                                            <select name="condition[user][operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">
+                                                    << /option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">
+                                                    <=< /option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button onclick="addMore(event, 'condition[user]')" type="button">Add More</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>record_access</td>
+                            <td>
+                                <input type="text" name="condition[record_access]"
+                                    placeholder="Record ID the user should have access to" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">
+                                request
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>method</td>
+                                        <td>
+                                            <select name="condition[request][method]">
+                                                <option value="GET">GET</option>
+                                                <option value="POST">POST</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="baseline">headers</td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>key</td>
+                                                    <td><input type="text" name="condition[request][headers][key]"
+                                                            placeholder="Header key name" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>value</td>
+                                                    <td><input type="text" name="condition[request][headers][value]"
+                                                            placeholder="Value" /></td>
+                                                </tr>
+                                            </table>
+                                            <button onclick="addMore(event, 'condition[request][header]', 'key-value')"
+                                                type="button">Add More</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="baseline">data</td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>key</td>
+                                                    <td><input type="text" name="condition[request][data][key]"
+                                                            placeholder="key[to][post]" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>value</td>
+                                                    <td><input type="text" name="condition[request][data][value]"
+                                                            placeholder="Value" /></td>
+                                                </tr>
+                                            </table>
+                                            <button onclick="addMore(event, 'condition[request][data]', 'key-value')"
+                                                type="button">Add More</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="baseline">match</td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>key</td>
+                                                    <td><input type="text" name="condition[request][match][key]"
+                                                            placeholder="key[to][match]" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>value</td>
+                                                    <td><input type="text" name="condition[request][match][value]"
+                                                            placeholder="Expected value" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>operator</td>
+                                                    <td>
+                                                        <select name="condition[request][match][operator]">
+                                                            <option value="=">=</option>
+                                                            <option value=">">></option>
+                                                            <option value="<">
+                                                                << /option>
+                                                            <option value=">=">>=</option>
+                                                            <option value="<=">
+                                                                <=< /option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <button onclick="addMore(event, 'condition[request][match]')"
+                                                type="button">Add More</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="baseline">
+                    action
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                access_group
+                            </td>
+                            <td>
+                                <input type="number" placeholder="Access level to give to user"
+                                    name="action[access_group]">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                record_access
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Record ID to give access to user"
+                                    name="action[record_access]">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="baseline">
+                                request
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>method</td>
+                                        <td>
+                                            <select name="action[request][method]">
+                                                <option value="GET">GET</option>
+                                                <option value="POST">POST</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="baseline">headers</td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>key</td>
+                                                    <td><input type="text" name="action[request][headers][key]"
+                                                            placeholder="Header key name" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>value</td>
+                                                    <td><input type="text" name="action[request][headers][value]"
+                                                            placeholder="Value" /></td>
+                                                </tr>
+                                            </table>
+                                            <button onclick="addMore(event, 'action[request][header]', 'key-value')"
+                                                type="button">Add More</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="baseline">data</td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>key</td>
+                                                    <td><input type="text" name="action[request][data][key]"
+                                                            placeholder="key[to][post]" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>value</td>
+                                                    <td><input type="text" name="action[request][data][value]"
+                                                            placeholder="Value to post" /></td>
+                                                </tr>
+                                            </table>
+                                            <button onclick="addMore(event, 'action[request][data]', 'key-value')"
+                                                type="button">Add More</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 
 <h2>Registered Tickets</h2>
 <hr>
-<div id="list_wrap">
+<div class="table_wrap">
     <style>
-        #list_wrap {
+        .table_wrap {
             overflow-x: auto;
             white-space: nowrap;
+        }
+
+        .table_wrap table {
+            width: 100%;
         }
 
         .tickets {
@@ -67,6 +505,7 @@
             <th>-</th>
             <th>Ticket ID</th>
             <th>Description</th>
+            <th>Secret</th>
             <style>
                 th {
                     font-weight: bold;
@@ -80,13 +519,8 @@
 
 <h2>Consumed Tickets</h2>
 <hr>
-<div id="list_wrap">
+<div class="table_wrap">
     <style>
-        #list_wrap {
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
         th {
             font-weight: bold;
             padding: 4px;
@@ -104,10 +538,13 @@
 <br>
 <br>
 <script>
+    // let proxyService = 'us31zettahertzesskpi';
+    let proxyService = 'eu71zettahertzesskpi';
+
     skapi.getProfile().then(u => console.log(u));
 
     skapi.getTickets({
-        service: 'us31zettahertzesskpi'
+        service: proxyService
     }).then(tickets => {
         console.log(tickets);
         for (let t of tickets.list) {
@@ -118,7 +555,9 @@
                 <td><button onclick="delete_ticket('${ticket_id}')">Delete</button></td>
                 <td><button onclick="list_consumed('${ticket_id}')">Consumed</button></td>
                 <td>${ticket_id}</td>
-                <td>${description}</td>`;
+                <td>${description}</td>
+                <td>alsdf alkdsjf lasd jflakjds lfjsadlf jalsdjflajdslfk jasldfja lkjfdlajsdlfjasdlfjalsjfd la jdslfjaslkdjflaskdj flajdsfla sdlfk jaldsfj lakdsjf lakjds fla jdslfk jaldsjf lads jflajs dlfj aldskfj lakds jflka jdsflkjadsf lkajds flkja fdslkajdsflka jfds</td>
+            `;
             let tr = document.createElement('tr');
             tr.id = ticket_id;
             tr.innerHTML = row;
@@ -129,7 +568,7 @@
     function delete_ticket(ticket_id) {
         document.getElementById(ticket_id).remove();
         skapi.unregisterTicket({
-            service: 'us31zettahertzesskpi',
+            service: proxyService,
             ticket_id
         }).then(res => console.log(res));
     }
@@ -146,7 +585,7 @@
         }
 
         skapi.getTickets({
-            service: 'us31zettahertzesskpi',
+            service: proxyService,
             ticket_id: '#' + ticket_id + '#'
         }).then(tickets => {
             console.log(tickets);
@@ -166,14 +605,13 @@
         });
     }
 
-    // let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m'];
-    let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj'];
+    let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m']; // test
+    // let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
     let setValueWhenMatch = [2, 3];
-    // us31zettahertzesskpi
-    // eu71zettahertzesskpi
+
     function registerTicket() {
         skapi.registerTicket({
-            service: 'us31zettahertzesskpi',
+            service: proxyService,
             ticket_id: 'delete-plan',
             placeholder: {
                 SERVICE_ID: 'data[object][metadata][service]',
@@ -205,7 +643,7 @@
             alert(err.message);
         });
         skapi.registerTicket({
-            service: 'us31zettahertzesskpi',
+            service: proxyService,
             ticket_id: 'subscribe-plan',
             placeholder: {
                 SERVICE_ID: 'data[object][metadata][service]',

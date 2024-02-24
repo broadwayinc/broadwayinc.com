@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-init-css@latest/init.css">
+
+<header>
+    <span id="title">
+        HTML semantics
+    </span>
+    <nav>
+        <a href="/admin/index.html">Home</a>
+        |
+        <a href="/admin/html-sem.html">Sections</a>
+        |
+        <a href="/admin/sem/cardblocks.html">Card Blocks</a>
+    </nav>
+    <style>
+        header {
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #title {
+            font-size: 2em;
+        }
+
+        nav {
+            text-align: right;
+        }
+    </style>
+</header>
+
+<style>
+    main {
+        padding: 10px;
+        margin: auto;
+        max-width: 1000px;
+    }
+</style>
+<main id="main">
+    <section class="section1">
+        <h1>Lets do a card block</h1>
+        <article>
+            <h1>Card don't use text tags</h1>
+            <p>
+                For UI and design purposed texts, use the plain texts.
+            </p>
+        </article>
+    </section>
+
+    <section>
+        <h1>Card uses divs</h1>
+
+        <div class="card">
+            <span class="card-title">
+                This is the card title
+            </span>
+            <p>
+                You can use paragraph for contexts.
+                <br>
+                You can use break tags for line breaks.
+            </p>
+            <button>Click</button>
+        </div>
+        <div class="card">
+            <span class="card-title">
+                This is the card title
+            </span>
+            <p>
+                You can use paragraph for contexts.
+                <br>
+                You can use break tags for line breaks.
+            </p>
+            <button>Click</button>
+        </div>
+        <div class="card">
+            <span class="card-title">
+                This is the card title
+            </span>
+            <p>
+                You can use paragraph for contexts.
+                <br>
+                You can use break tags for line breaks.
+            </p>
+            <button>Click</button>
+        </div>
+    </section>
+    <style>
+        .card {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+
+            max-width: 300px;
+            display: inline-block;
+        }
+
+        .card button {
+            float: right;
+        }
+
+        .card::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+    <a style='float: right;' href="/admin/sem/cardblocks2.html">Next</a>
+</main>
