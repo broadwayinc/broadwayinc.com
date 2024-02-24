@@ -142,11 +142,9 @@
                                             <select name="condition[ip][operator]">
                                                 <option value="=">=</option>
                                                 <option value=">">></option>
-                                                <option value="<">
-                                                    << /option>
+                                                <option value="<"><</option>
                                                 <option value=">=">>=</option>
-                                                <option value="<=">
-                                                    <=< /option>
+                                                <option value="<="><=</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -168,11 +166,9 @@
                                             <select name="condition[user_agent][operator]">
                                                 <option value="=">=</option>
                                                 <option value=">">></option>
-                                                <option value="<">
-                                                    << /option>
+                                                <option value="<"><</option>
                                                 <option value=">=">>=</option>
-                                                <option value="<=">
-                                                    <=< /option>
+                                                <option value="<="><=</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -200,10 +196,10 @@
                                                 <option value="=">=</option>
                                                 <option value=">">></option>
                                                 <option value="<">
-                                                    << /option>
+                                                    <</option>
                                                 <option value=">=">>=</option>
                                                 <option value="<=">
-                                                    <=< /option>
+                                                    <=</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -232,10 +228,10 @@
                                                 <option value="=">=</option>
                                                 <option value=">">></option>
                                                 <option value="<">
-                                                    << /option>
+                                                    <</option>
                                                 <option value=">=">>=</option>
                                                 <option value="<=">
-                                                    <=< /option>
+                                                    <=</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -277,10 +273,10 @@
                                                 <option value="=">=</option>
                                                 <option value=">">></option>
                                                 <option value="<">
-                                                    << /option>
+                                                    <</option>
                                                 <option value=">=">>=</option>
                                                 <option value="<=">
-                                                    <=< /option>
+                                                    <=</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -369,10 +365,10 @@
                                                             <option value="=">=</option>
                                                             <option value=">">></option>
                                                             <option value="<">
-                                                                << /option>
+                                                                <</option>
                                                             <option value=">=">>=</option>
                                                             <option value="<=">
-                                                                <=< /option>
+                                                                <=</option>
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -505,7 +501,6 @@
             <th>-</th>
             <th>Ticket ID</th>
             <th>Description</th>
-            <th>Secret</th>
             <style>
                 th {
                     font-weight: bold;
@@ -556,7 +551,6 @@
                 <td><button onclick="list_consumed('${ticket_id}')">Consumed</button></td>
                 <td>${ticket_id}</td>
                 <td>${description}</td>
-                <td>alsdf alkdsjf lasd jflakjds lfjsadlf jalsdjflajdslfk jasldfja lkjfdlajsdlfjasdlfjalsjfd la jdslfjaslkdjflaskdj flajdsfla sdlfk jaldsfj lakdsjf lakjds fla jdslfk jaldsjf lads jflajs dlfj aldskfj lakds jflka jdsflkjadsf lkajds flkja fdslkajdsflka jfds</td>
             `;
             let tr = document.createElement('tr');
             tr.id = ticket_id;
