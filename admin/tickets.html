@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-init-css@latest/init.css">
 <link rel="stylesheet" href="../style.css">
 <script src="tickets.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@beta/dist/skapi.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsoncrawler@0.2.1/jsoncrawler.js"></script>
 <!-- <script>
     const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
 </script> -->
-<script src="https://cdn.jsdelivr.net/npm/skapi-js@beta/dist/skapi.js"></script>
 <script>
     const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", {autoLogin: true}, {"hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir"});
 </script>
@@ -65,7 +65,7 @@
                     description
                 </td>
                 <td>
-                    <input type="text" name="description" placeholder="Description of the ticket" required />
+                    <input type="text" name="description" placeholder="Description of the ticket" />
                 </td>
             </tr>
             <tr>
@@ -99,9 +99,10 @@
                         width: 100%;
                     }
 
-                    #params input[type="text"],
-                    #params input[type="number"],
-                    #params input[type="datetime-local"] {
+                    #params td>input[type="text"],
+                    #params td>input[type="url"],
+                    #params td>input[type="number"],
+                    #params td>input[type="datetime-local"] {
                         width: 100%;
                     }
 
@@ -131,157 +132,43 @@
                             <td class="baseline">ip</td>
                             <td>
                                 <table>
-                                    <tr>
-                                        <td>value</td>
-                                        <td><input type="text" name="condition[ip][value]"
-                                                placeholder="xxx.xxx.xxx.xxx" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>operator</td>
-                                        <td>
-                                            <select name="condition[ip][operator]">
-                                                <option value="=">=</option>
-                                                <option value=">">></option>
-                                                <option value="<"><</option>
-                                                <option value=">=">>=</option>
-                                                <option value="<="><=</option>
-                                            </select>
-                                        </td>
-                                    </tr>
                                 </table>
+                                <button onclick="addMore(event, 'condition[ip]', 'value')" type="button">Add
+                                    Value</button>
                             </td>
                         </tr>
                         <tr>
                             <td class="baseline">user_agent</td>
                             <td>
                                 <table>
-                                    <tr>
-                                        <td>value</td>
-                                        <td><input type="text" name="condition[user_agent][value]"
-                                                placeholder="Expected user agent value" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>operator</td>
-                                        <td>
-                                            <select name="condition[user_agent][operator]">
-                                                <option value="=">=</option>
-                                                <option value=">">></option>
-                                                <option value="<"><</option>
-                                                <option value=">=">>=</option>
-                                                <option value="<="><=</option>
-                                            </select>
-                                        </td>
-                                    </tr>
                                 </table>
+                                <button onclick="addMore(event, 'condition[ip]', 'value')" type="button">Add
+                                    Value</button>
                             </td>
                         </tr>
                         <tr>
                             <td class="baseline">headers</td>
                             <td>
                                 <table>
-                                    <tr>
-                                        <td>key</td>
-                                        <td><input type="text" name="condition[headers][key]"
-                                                placeholder="Key name of header to match" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>value</td>
-                                        <td><input type="text" name="condition[headers][value]"
-                                                placeholder="Expected value" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>operator</td>
-                                        <td>
-                                            <select name="condition[headers][operator]">
-                                                <option value="=">=</option>
-                                                <option value=">">></option>
-                                                <option value="<">
-                                                    <</option>
-                                                <option value=">=">>=</option>
-                                                <option value="<=">
-                                                    <=</option>
-                                            </select>
-                                        </td>
-                                    </tr>
                                 </table>
-                                <button onclick="addMore(event, 'condition[header]')" type="button">Add More</button>
+                                <button onclick="addMore(event, 'condition[header]')" type="button">Add Key</button>
                             </td>
                         </tr>
                         <tr>
                             <td class="baseline">data</td>
                             <td>
                                 <table>
-                                    <tr>
-                                        <td>key</td>
-                                        <td><input type="text" name="condition[data][key]"
-                                                placeholder="key[to][match]" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>value</td>
-                                        <td><input type="text" name="condition[data][value]"
-                                                placeholder="Value to match" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>operator</td>
-                                        <td>
-                                            <select name="condition[data][operator]">
-                                                <option value="=">=</option>
-                                                <option value=">">></option>
-                                                <option value="<">
-                                                    <</option>
-                                                <option value=">=">>=</option>
-                                                <option value="<=">
-                                                    <=</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>setValueWhenMatch</td>
-                                        <td>
-                                            <input type='text' name="condition[data][setValueWhenMatch]">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ignoreMismatch</td>
-                                        <td>
-                                            <input type='checkbox' name="condition[data][ignoreMismatch]">
-                                        </td>
-                                    </tr>
                                 </table>
-                                <button onclick="addMore(event, 'condition[data]', true)" type="button">Add
-                                    More</button>
+                                <button onclick="addMore(event, 'condition[data]', 'match')" type="button">Add
+                                    Key</button>
                             </td>
                         </tr>
                         <tr>
                             <td class="baseline">user</td>
                             <td>
                                 <table>
-                                    <tr>
-                                        <td>key</td>
-                                        <td><input type="text" name="condition[user][key]"
-                                                placeholder="User attribute name" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>value</td>
-                                        <td><input type="text" name="condition[user][value]"
-                                                placeholder="Expected attribute value" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>operator</td>
-                                        <td>
-                                            <select name="condition[user][operator]">
-                                                <option value="=">=</option>
-                                                <option value=">">></option>
-                                                <option value="<">
-                                                    <</option>
-                                                <option value=">=">>=</option>
-                                                <option value="<=">
-                                                    <=</option>
-                                            </select>
-                                        </td>
-                                    </tr>
                                 </table>
-                                <button onclick="addMore(event, 'condition[user]')" type="button">Add More</button>
+                                <button onclick="addMore(event, 'condition[user]')" type="button">Add Key</button>
                             </td>
                         </tr>
                         <tr>
@@ -298,6 +185,12 @@
                             <td>
                                 <table>
                                     <tr>
+                                        <td>url</td>
+                                        <td>
+                                            <input type="url" name="condition[request][url]">
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>method</td>
                                         <td>
                                             <select name="condition[request][method]">
@@ -310,71 +203,28 @@
                                         <td class="baseline">headers</td>
                                         <td>
                                             <table>
-                                                <tr>
-                                                    <td>key</td>
-                                                    <td><input type="text" name="condition[request][headers][key]"
-                                                            placeholder="Header key name" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>value</td>
-                                                    <td><input type="text" name="condition[request][headers][value]"
-                                                            placeholder="Value" /></td>
-                                                </tr>
                                             </table>
                                             <button onclick="addMore(event, 'condition[request][header]', 'key-value')"
-                                                type="button">Add More</button>
+                                                type="button">Add Key</button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="baseline">data</td>
                                         <td>
                                             <table>
-                                                <tr>
-                                                    <td>key</td>
-                                                    <td><input type="text" name="condition[request][data][key]"
-                                                            placeholder="key[to][post]" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>value</td>
-                                                    <td><input type="text" name="condition[request][data][value]"
-                                                            placeholder="Value" /></td>
-                                                </tr>
                                             </table>
-                                            <button onclick="addMore(event, 'condition[request][data]', 'key-value')"
-                                                type="button">Add More</button>
+                                            <button
+                                                onclick="addMore(event, 'condition[request][data]', 'key-value-type')"
+                                                type="button">Add Key</button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="baseline">match</td>
                                         <td>
                                             <table>
-                                                <tr>
-                                                    <td>key</td>
-                                                    <td><input type="text" name="condition[request][match][key]"
-                                                            placeholder="key[to][match]" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>value</td>
-                                                    <td><input type="text" name="condition[request][match][value]"
-                                                            placeholder="Expected value" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>operator</td>
-                                                    <td>
-                                                        <select name="condition[request][match][operator]">
-                                                            <option value="=">=</option>
-                                                            <option value=">">></option>
-                                                            <option value="<">
-                                                                <</option>
-                                                            <option value=">=">>=</option>
-                                                            <option value="<=">
-                                                                <=</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
                                             </table>
                                             <button onclick="addMore(event, 'condition[request][match]')"
-                                                type="button">Add More</button>
+                                                type="button">Add Key</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -414,6 +264,12 @@
                             <td>
                                 <table>
                                     <tr>
+                                        <td>url</td>
+                                        <td>
+                                            <input type="url" name="action[request][url]">
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>method</td>
                                         <td>
                                             <select name="action[request][method]">
@@ -426,38 +282,18 @@
                                         <td class="baseline">headers</td>
                                         <td>
                                             <table>
-                                                <tr>
-                                                    <td>key</td>
-                                                    <td><input type="text" name="action[request][headers][key]"
-                                                            placeholder="Header key name" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>value</td>
-                                                    <td><input type="text" name="action[request][headers][value]"
-                                                            placeholder="Value" /></td>
-                                                </tr>
                                             </table>
                                             <button onclick="addMore(event, 'action[request][header]', 'key-value')"
-                                                type="button">Add More</button>
+                                                type="button">Add Key</button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="baseline">data</td>
                                         <td>
                                             <table>
-                                                <tr>
-                                                    <td>key</td>
-                                                    <td><input type="text" name="action[request][data][key]"
-                                                            placeholder="key[to][post]" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>value</td>
-                                                    <td><input type="text" name="action[request][data][value]"
-                                                            placeholder="Value to post" /></td>
-                                                </tr>
                                             </table>
-                                            <button onclick="addMore(event, 'action[request][data]', 'key-value')"
-                                                type="button">Add More</button>
+                                            <button onclick="addMore(event, 'action[request][data]', 'key-value-type')"
+                                                type="button">Add Key</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -467,6 +303,13 @@
                 </td>
             </tr>
         </table>
+        <input type="submit" value="Register Ticket">
+        <style>
+            input[type="submit"],
+            button[type="button"] {
+                float: right;
+            }
+        </style>
     </form>
 </div>
 
@@ -603,78 +446,125 @@
     // let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
     let setValueWhenMatch = [2, 3];
 
-    function registerTicket() {
-        skapi.registerTicket({
-            service: proxyService,
-            ticket_id: 'delete-plan',
-            placeholder: {
-                SERVICE_ID: 'data[object][metadata][service]',
-                SUBSCRIPTION_ID: 'data[object][id]',
-                OWNER_ID: 'data[object][metadata][owner]',
-            },
-            condition: {
-                method: 'post',
-                data: [
-                    {
-                        key: 'data[object][plan][id]',
-                        value,
-                        operator: '=',
-                        setValueWhenMatch
-                    }
-                ]
-            },
-            action: {
-                update_service: {
-                    action: -1,
-                    group: 'data[object][plan][id]',
-                    sub_item: 'data[object][items][data][0][id]'
+    function registerTicket(event) {
+        event.preventDefault();
+        let data = skapi.extractFormData(event).data;
+        jsonCrawler(data).forEach(v => {
+            let delParent = data;
+            if (v.key === 'url' && v.value === '') {
+                for (let k of v.path.slice(0, -1)) {
+                    delParent = delParent[k]
                 }
-            },
-            description: 'Subscription plan deleted.'
-        }).then(res => {
-            console.log(res);
-        }).catch(err => {
-            alert(err.message);
-        });
-        skapi.registerTicket({
-            service: proxyService,
-            ticket_id: 'subscribe-plan',
-            placeholder: {
-                SERVICE_ID: 'data[object][metadata][service]',
-                SUBSCRIPTION_ID: 'data[object][id]',
-                OWNER_ID: 'data[object][metadata][owner]',
-            },
-            condition: {
-                bypassConditionMismatch: true,
-                method: 'post',
-                data: [
-                    {
-                        key: 'data[object][plan][id]',
-                        value,
-                        operator: '=',
-                        setValueWhenMatch
-                    },
-                    {
-                        key: 'data[object][status]',
-                        value: ['active', 'incomplete_expired'],
-                        operator: '=',
-                        setValueWhenMatch: [1, -1],
-                    }
-                ]
-            },
-            action: {
-                update_service: {
-                    action: 'data[object][status]',
-                    group: 'data[object][plan][id]',
-                    sub_item: 'data[object][items][data][0][id]'
+                delete delParent[v.path[v.path.length - 1]];
+            }
+            else if (v.value === '' && typeof v.key === 'string') {
+                for (let k of v.path) {
+                    delParent = delParent[k]
                 }
-            },
-            description: 'Subscribed to a plan.'
-        }).then(res => {
-            console.log(res);
-        }).catch(err => {
-            alert(err.message);
+                delete delParent[v.key];
+            }
         });
+        jsonCrawler(data).forEach(v => {
+            if (v.key === 'operator' && !v.siblings.length || typeof v.value === 'object' && !Array.isArray(v.value)) {
+                let delParent = data;
+                for (let k of v.path) {
+                    if (k in delParent) {
+                        delParent = delParent[k]
+                    }
+                    else {
+                        break;
+                    }
+                }
+                delete delParent[v.key];
+            }
+        });
+        // jsonCrawler(data).forEach(v=>{
+        //     if(v.key === 'operator' && !v.siblings.length || typeof v.value === 'object' && !Array.isArray(v.value)) {
+        //         let delParent = data;
+        //         for(let k of v.path) {
+        //             if(k in delParent) {
+        //                 delParent = delParent[k]
+        //             }
+        //             else {
+        //                 break;
+        //             }
+        //         }
+        //         delete delParent[v.key];
+        //     }
+        // });
+        console.log(data);
+
+        // skapi.registerTicket({
+        //     service: proxyService,
+        //     ticket_id: 'delete-plan',
+        //     placeholder: {
+        //         SERVICE_ID: 'data[object][metadata][service]',
+        //         SUBSCRIPTION_ID: 'data[object][id]',
+        //         OWNER_ID: 'data[object][metadata][owner]',
+        //     },
+        //     condition: {
+        //         method: 'post',
+        //         data: [
+        //             {
+        //                 key: 'data[object][plan][id]',
+        //                 value,
+        //                 operator: '=',
+        //                 setValueWhenMatch
+        //             }
+        //         ]
+        //     },
+        //     action: {
+        //         update_service: {
+        //             action: -1,
+        //             group: 'data[object][plan][id]',
+        //             sub_item: 'data[object][items][data][0][id]'
+        //         }
+        //     },
+        //     description: 'Subscription plan deleted.'
+        // }).then(res => {
+        //     console.log(res);
+        // }).catch(err => {
+        //     alert(err.message);
+        // });
+        // skapi.registerTicket({
+        //     service: proxyService,
+        //     ticket_id: 'subscribe-plan',
+        //     placeholder: {
+        //         SERVICE_ID: 'data[object][metadata][service]',
+        //         SUBSCRIPTION_ID: 'data[object][id]',
+        //         OWNER_ID: 'data[object][metadata][owner]',
+        //     },
+        //     condition: {
+        //         bypassConditionMismatch: true,
+        //         method: 'post',
+        //         data: [
+        //             {
+        //                 key: 'data[object][plan][id]',
+        //                 value,
+        //                 operator: '=',
+        //                 setValueWhenMatch
+        //             },
+        //             {
+        //                 key: 'data[object][status]',
+        //                 value: ['active', 'incomplete_expired'],
+        //                 operator: '=',
+        //                 setValueWhenMatch: [1, -1],
+        //             }
+        //         ]
+        //     },
+        //     action: {
+        //         update_service: {
+        //             action: 'data[object][status]',
+        //             group: 'data[object][plan][id]',
+        //             sub_item: 'data[object][items][data][0][id]'
+        //         }
+        //     },
+        //     description: 'Subscribed to a plan.'
+        // }).then(res => {
+        //     console.log(res);
+        // }).catch(err => {
+        //     alert(err.message);
+        // });
     }
 </script>
 <style>
@@ -685,3 +575,69 @@
         box-sizing: border-box;
     }
 </style>
+<!-- 
+<style>
+    /* input styling */
+    .input-field {
+        width: 100%;
+        line-height: 0;
+        /* display: inline-block; */
+        display: inline-flex;
+        background-color: white;
+        position: relative !important;
+        align-items: center;
+        justify-content: space-around;
+
+        box-sizing: border-box;
+        padding: 4px;
+    }
+
+    .input-field>* {
+        vertical-align: middle;
+        display: inline-block;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .input-field>*:first-child {
+        flex-grow: 1;
+    }
+
+    .input-field>.embed {
+        display: inline-flex;
+        /* padding: 4px; */
+    }
+
+    .input-field>.embed>* {
+        max-height: 100%;
+    }
+
+    .input-field>.styler {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .input-field>input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
+        padding: 0 4px 0 12px;
+        /* padding: 0 0 0 12px; */
+        font-size: 16px;
+        border: none;
+    }
+
+    .input-field>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
+        outline: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .input-field>input:focus~.styler {
+        outline: 1px solid rgb(0, 0, 0, 0.5);
+        border: 1px solid black;
+    }
+</style> -->
