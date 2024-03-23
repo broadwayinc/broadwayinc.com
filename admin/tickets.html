@@ -48,7 +48,7 @@
                     Serivce ID
                 </td>
                 <td>
-                    <input type="text" name="service" value="eu71zettahertzesskpi" required />
+                    <input type="text" id='serviceIdInput' name="service" required />
                 </td>
             </tr>
             <tr>
@@ -449,10 +449,12 @@
 
     // let proxyService = 'eu71zettahertzesskpi'; // test
     let proxyService = 'us31zettahertzesskpi'; // live
-
+    
     // let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m']; // test
     let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
-
+    
+    document.getElementById('serviceIdInput').value = proxyService;
+    
     skapi.getProfile().then(u => {
         console.log(u)
     });
