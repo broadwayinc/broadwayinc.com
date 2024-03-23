@@ -454,7 +454,7 @@
     let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
     
     document.getElementById('serviceIdInput').value = proxyService;
-    
+
     skapi.getProfile().then(u => {
         console.log(u)
     });
@@ -484,6 +484,8 @@
 
     let edit_ticket = (ticket_id) => {
         document.getElementById('form').reset();
+        document.getElementById('serviceIdInput').value = proxyService;
+    
         let removeButton = document.getElementsByClassName('removeButton');
         while (removeButton.length > 0) {
             removeButton[removeButton.length - 1].click();
