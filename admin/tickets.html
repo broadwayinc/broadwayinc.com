@@ -10,7 +10,7 @@
     const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
 </script>
 <!-- <script>
-    const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", {autoLogin: true}, {"hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir"});
+    const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", { autoLogin: true }, { "hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir" });
 </script> -->
 <div style="display: flex; align-items: center; justify-content: space-between;">
     <h2>Tickets</h2>
@@ -36,17 +36,16 @@
 
 <br>
 
-<!-- <button onclick="registerTicket()">Register Ticket</button> -->
 <hr>
 
 <h2>Register Ticket</h2>
 
 <div class="table_wrap">
-    <form onsubmit="registerTicket(event)">
+    <form onsubmit="registerTicket(event)" id="form">
         <table id="params">
             <tr>
                 <td>
-                    service
+                    Serivce ID
                 </td>
                 <td>
                     <input type="text" name="service" value="eu71zettahertzesskpi" required />
@@ -54,7 +53,7 @@
             </tr>
             <tr>
                 <td>
-                    ticket_id
+                    Ticket ID
                 </td>
                 <td>
                     <input type="text" name="ticket_id" placeholder="Unique name for ticket ID" required />
@@ -62,15 +61,15 @@
             </tr>
             <tr>
                 <td>
-                    description
+                    Description
                 </td>
                 <td>
-                    <input type="text" name="description" placeholder="Description of the ticket" />
+                    <input type="text" name="description" placeholder="Description of the ticket" required />
                 </td>
             </tr>
             <tr>
                 <td>
-                    count
+                    Number of Tickets
                 </td>
                 <td>
                     <input type="number" name="count" min="0" placeholder="Infinite" />
@@ -78,10 +77,19 @@
             </tr>
             <tr>
                 <td>
-                    time_to_live
+                    TTL
                 </td>
                 <td>
                     <input type="datetime-local" name="time_to_live" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Placeholders
+                </td>
+                <td>
+                    <textarea name="placeholder" placeholder="Placeholder for dynamic values"
+                        onkeydown="tabIndent(event, this)"></textarea>
                 </td>
             </tr>
             <tr>
@@ -106,21 +114,22 @@
                         width: 100%;
                     }
 
-                    table:not(:last-child) {
-                        margin-bottom: 8px;
+                    textarea {
+                        width: 100%;
+                        height: 200px;
                     }
                 </style>
                 <td class="baseline">
-                    condition
+                    Condition
                 </td>
                 <td>
                     <table>
                         <tr>
-                            <td>bypassConditionMismatch</td>
-                            <td><input type="checkbox" name="condition[bypassConditionMismatch]" value="true" /></td>
+                            <td>Always return 200</td>
+                            <td><input type="checkbox" name="condition[return200]" value="true" /></td>
                         </tr>
                         <tr>
-                            <td>method</td>
+                            <td>Incomming Method</td>
                             <td>
                                 <select name="condition[method]">
                                     <option value="GET">GET</option>
@@ -129,50 +138,98 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="baseline">ip</td>
+                            <td class="baseline">Allowed IP</td>
                             <td>
                                 <table>
+                                    <tr>
+                                        <td>Operator</td>
+                                        <td>
+                                            <select name="condition[ip][operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">&lt;</option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">&gt;=</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Value</td>
+                                        <td>
+                                            <input type="text" name="condition[ip][value]"
+                                                placeholder="xxx.xxx.xxx.xxx" />
+                                        </td>
+                                    </tr>
                                 </table>
-                                <button onclick="addMore(event, 'condition[ip]', 'value')" type="button">Add
+                                <button id='condition.ip.value'
+                                    onclick="addOrValue(event, 'condition[ip][value]', 'xxx.xxx.xxx.xxx')"
+                                    type="button">Add Or
                                     Value</button>
                             </td>
                         </tr>
                         <tr>
-                            <td class="baseline">user_agent</td>
+                            <td class="baseline">User Agent</td>
                             <td>
                                 <table>
+                                    <tr>
+                                        <td>Operator</td>
+                                        <td>
+                                            <select name="condition[user_agent[operator]">
+                                                <option value="=">=</option>
+                                                <option value=">">></option>
+                                                <option value="<">&lt;</option>
+                                                <option value=">=">>=</option>
+                                                <option value="<=">&gt;=</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Value</td>
+                                        <td>
+                                            <input type="text" name="condition[user_agent][value]"
+                                                placeholder="Expected user agent value" />
+                                        </td>
+                                    </tr>
                                 </table>
-                                <button onclick="addMore(event, 'condition[ip]', 'value')" type="button">Add
+                                <button id='condition.user_agent.value'
+                                    onclick="addOrValue(event, 'condition[user_agent][value]', 'Expected user agent value')"
+                                    type="button">Add Or
                                     Value</button>
                             </td>
                         </tr>
                         <tr>
-                            <td class="baseline">headers</td>
+                            <td class="baseline">Headers</td>
                             <td>
                                 <table>
                                 </table>
-                                <button onclick="addMore(event, 'condition[header]')" type="button">Add Key</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="baseline">data</td>
-                            <td>
-                                <table>
-                                </table>
-                                <button onclick="addMore(event, 'condition[data]', 'match')" type="button">Add
+                                <button id='condition.headers'
+                                    onclick="addMore(event, 'condition[headers]', {typed: false})" type="button">Add
                                     Key</button>
                             </td>
                         </tr>
                         <tr>
-                            <td class="baseline">user</td>
+                            <td class="baseline">Data | Get Parameter</td>
                             <td>
                                 <table>
                                 </table>
-                                <button onclick="addMore(event, 'condition[user]')" type="button">Add Key</button>
+                                <button id='condition.data'
+                                    onclick="addMore(event, 'condition[data]', {typed: true, replace_option: true})"
+                                    type="button">Add
+                                    Key</button>
                             </td>
                         </tr>
                         <tr>
-                            <td>record_access</td>
+                            <td class="baseline">User Attributes</td>
+                            <td>
+                                <table>
+                                </table>
+                                <button id='condition.user' onclick="addMore(event, 'condition[user]', {typed: true})"
+                                    type="button">Add
+                                    Key</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Record Access</td>
                             <td>
                                 <input type="text" name="condition[record_access]"
                                     placeholder="Record ID the user should have access to" />
@@ -180,18 +237,19 @@
                         </tr>
                         <tr>
                             <td class="baseline">
-                                request
+                                Request
                             </td>
                             <td>
                                 <table>
                                     <tr>
-                                        <td>url</td>
+                                        <td>URL</td>
                                         <td>
-                                            <input type="url" name="condition[request][url]">
+                                            <input type="url" name="condition[request][url]"
+                                                placeholder="URL to request for checking additional condition">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>method</td>
+                                        <td>Method</td>
                                         <td>
                                             <select name="condition[request][method]">
                                                 <option value="GET">GET</option>
@@ -200,30 +258,27 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="baseline">headers</td>
+                                        <td class="baseline">Headers</td>
                                         <td>
-                                            <table>
-                                            </table>
-                                            <button onclick="addMore(event, 'condition[request][header]', 'key-value')"
-                                                type="button">Add Key</button>
+                                            <textarea name="condition[request][headers]"
+                                                onkeydown="tabIndent(event, this)"
+                                                placeholder="Request headers"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="baseline">data</td>
+                                        <td class="baseline">Data</td>
                                         <td>
-                                            <table>
-                                            </table>
-                                            <button
-                                                onclick="addMore(event, 'condition[request][data]', 'key-value-type')"
-                                                type="button">Add Key</button>
+                                            <textarea name="condition[request][data]" onkeydown="tabIndent(event, this)"
+                                                placeholder="JSON data"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="baseline">match</td>
+                                        <td class="baseline">Match</td>
                                         <td>
                                             <table>
                                             </table>
-                                            <button onclick="addMore(event, 'condition[request][match]')"
+                                            <button id='condition.request.match'
+                                                onclick="addMore(event, 'condition[request][match]', {typed: true})"
                                                 type="button">Add Key</button>
                                         </td>
                                     </tr>
@@ -235,22 +290,22 @@
             </tr>
             <tr>
                 <td class="baseline">
-                    action
+                    Action
                 </td>
                 <td>
                     <table>
                         <tr>
                             <td>
-                                access_group
+                                Access Group
                             </td>
                             <td>
-                                <input type="number" placeholder="Access level to give to user"
+                                <input type="number" min="1" max="99" placeholder="Access level to give to user (1-99)"
                                     name="action[access_group]">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                record_access
+                                Record Access
                             </td>
                             <td>
                                 <input type="text" placeholder="Record ID to give access to user"
@@ -259,18 +314,19 @@
                         </tr>
                         <tr>
                             <td class="baseline">
-                                request
+                                Request
                             </td>
                             <td>
                                 <table>
                                     <tr>
-                                        <td>url</td>
+                                        <td>URL</td>
                                         <td>
-                                            <input type="url" name="action[request][url]">
+                                            <input type="url" name="action[request][url]"
+                                                placeholder="URL to request when condition pass">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>method</td>
+                                        <td>Method</td>
                                         <td>
                                             <select name="action[request][method]">
                                                 <option value="GET">GET</option>
@@ -279,24 +335,29 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="baseline">headers</td>
+                                        <td class="baseline">Headers</td>
                                         <td>
-                                            <table>
-                                            </table>
-                                            <button onclick="addMore(event, 'action[request][header]', 'key-value')"
-                                                type="button">Add Key</button>
+                                            <textarea name="action[request][headers]" placeholder="Request headers"
+                                                onkeydown="tabIndent(event, this)"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="baseline">data</td>
+                                        <td class="baseline">Data</td>
                                         <td>
-                                            <table>
-                                            </table>
-                                            <button onclick="addMore(event, 'action[request][data]', 'key-value-type')"
-                                                type="button">Add Key</button>
+                                            <textarea name="action[request][data]" placeholder="JSON data"
+                                                onkeydown="tabIndent(event, this)"></textarea>
                                         </td>
                                     </tr>
                                 </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Update Service
+                            </td>
+                            <td>
+                                <textarea name="action[update_service]" placeholder="Update service condition"
+                                    onkeydown="tabIndent(event, this)"></textarea>
                             </td>
                         </tr>
                     </table>
@@ -305,8 +366,7 @@
         </table>
         <input type="submit" value="Register Ticket">
         <style>
-            input[type="submit"],
-            button[type="button"] {
+            input[type="submit"] {
                 float: right;
             }
         </style>
@@ -340,8 +400,9 @@
     </style>
     <table class='tickets' id="registered_tickets">
         <tr>
-            <th>-</th>
-            <th>-</th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th>Ticket ID</th>
             <th>Description</th>
             <style>
@@ -368,30 +429,219 @@
         <tr>
             <th>Time</th>
             <th>User</th>
-            <th>Service</th>
-            <th>Subscription</th>
+            <th>Log</th>
         </tr>
     </table>
 </div>
 <br>
 <br>
-<script>
-    // let proxyService = 'us31zettahertzesskpi';
-    let proxyService = 'eu71zettahertzesskpi';
 
-    skapi.getProfile().then(u => console.log(u));
+<dialog id="logDia" style="max-width: 1000px; max-height: 90vh;">
+    <pre id="log"></pre>
+</dialog>
+
+<script>
+    // get body
+    let body = document.querySelector('body');
+    body.addEventListener('click', function (e) {
+        logDia.close();
+    });
+
+    // let proxyService = 'eu71zettahertzesskpi'; // test
+    let proxyService = 'us31zettahertzesskpi'; // live
+
+    // let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m']; // test
+    let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
+
+    skapi.getProfile().then(u => {
+        console.log(u)
+    });
+
+    let ticketList = {}
+
+    function implementKeyValueInputs(obj, inpName, adder) {
+        if (!obj) return;
+
+        if (!Array.isArray(obj)) {
+            obj = [obj]
+        }
+        for (let h of obj) {
+            let keys = Object.keys(h);
+            document.getElementById(adder).click();
+            for (let k of keys) {
+                let inp = document.querySelectorAll(`${k === 'operator' ? 'select' : 'input'}[name="${inpName}[${k}]"]`);
+                inp = inp[inp.length - 1];
+                let valType = typeof h[k]
+                if (valType !== 'string' && inp.nextElementSibling.tagName === 'SELECT') {
+                    inp.nextElementSibling.value = valType === 'number' ? 'number' : valType === 'boolean' ? 'checkbox' : 'text';
+                }
+                inp.value = h[k];
+            }
+        }
+    }
+
+    let edit_ticket = (ticket_id) => {
+        document.getElementById('form').reset();
+        let removeButton = document.getElementsByClassName('removeButton');
+        while (removeButton.length > 0) {
+            removeButton[removeButton.length - 1].click();
+        }
+
+
+        // focus to the top of the form
+        document.querySelector('input[name="service"]').focus();
+
+        let ticket = JSON.parse(JSON.stringify(ticketList[ticket_id]));
+
+        let params = {
+            ticket_id: v => {
+                document.querySelector('input[name="ticket_id"]').value = v;
+            },
+            placeholder: v => {
+                document.querySelector('textarea[name="placeholder"]').value = JSON.stringify(v, null, 2);
+            },
+            condition: {
+                return200: v => {
+                    document.querySelector('input[name="condition[return200]"]').checked = v;
+                }, // When true, returns 200 when condition mismatch
+                method: v => {
+                    document.querySelector('select[name="condition[method]"]').value = v;
+                },
+                headers: v => {
+                    implementKeyValueInputs(v, 'condition[headers]', 'condition.headers');
+                },
+                ip: v => {
+                    document.querySelector('select[name="condition[ip][operator]"]').value = v.operator;
+                    if (Array.isArray(v.value)) {
+                        for (let i = 0; i < v.value.length; i++) {
+                            if (i > 0) {
+                                document.getElementById('condition.ip.value').click();
+                            }
+                            let inp = document.querySelectorAll('input[name="condition[ip][value]"]')
+                            inp[inp.length - 1].value = v.value[i];
+                        }
+                    }
+                    else {
+                        document.querySelector('input[name="condition[ip][value]"]').value = v.value;
+                    }
+                },
+                user_agent: v => {
+                    document.querySelector('select[name="condition[user_agent][operator]"]').value = v.operator;
+                    if (Array.isArray(v.value)) {
+                        for (let i = 0; i < v.value.length; i++) {
+                            if (i > 0) {
+                                document.getElementById('condition.user_agent.value').click();
+                            }
+                            let inp = document.querySelectorAll('input[name="condition[user_agent][value]"]')
+                            inp[inp.length - 1].value = v.value[i];
+                        }
+                    }
+                    else {
+                        document.querySelector('input[name="condition[user_agent][value]"]').value = v.value;
+                    }
+                },
+                data: v => {
+                    implementKeyValueInputs(v, 'condition[data]', 'condition.data');
+                },
+                params: v => {
+                    implementKeyValueInputs(v, 'condition[data]', 'condition.data');
+                },
+                user: v => {
+                    implementKeyValueInputs(v, 'condition[user]', 'condition.user');
+                },
+                record_access: v => {
+                    document.querySelector('input[name="condition[record_access]"]').value = v;
+                },
+                request: {
+                    url: v => {
+                        document.querySelector('input[name="condition[request][url]"]').value = v;
+                    },
+                    method: v => {
+                        document.querySelector('select[name="condition[request][method]"]').value = v;
+                    },
+                    headers: v => {
+                        document.querySelector('textarea[name="condition[request][headers]"]').value = JSON.stringify(v, null, 2);
+                    },
+                    data: v => {
+                        document.querySelector('textarea[name="condition[request][data]"]').value = JSON.stringify(v, null, 2);
+                    },
+                    params: v => {
+                        document.querySelector('textarea[name="condition[request][data]"]').value = JSON.stringify(v, null, 2);
+                    },
+                    match: v => {
+                        implementKeyValueInputs(v, 'condition[request][match]', 'condition.request.match');
+                    }
+                },
+            },
+            action: {
+                access_group: v => {
+                    document.querySelector('input[name="action[access_group]"]').value = v;
+                }, // group number to give access to the user
+                record_access: v => {
+                    document.querySelector('input[name="action[record_access]"]').value = v;
+                }, // record id to give access to the user
+                request: {
+                    url: v => {
+                        document.querySelector('input[name="action[request][url]"]').value = v;
+                    },
+                    method: v => {
+                        document.querySelector('select[name="action[request][method]"]').value = v;
+                    },
+                    headers: v => {
+                        document.querySelector('textarea[name="action[request][headers]"]').value = JSON.stringify(v, null, 2);
+                    },
+                    data: v => {
+                        document.querySelector('textarea[name="action[request][data]"]').value = JSON.stringify(v, null, 2);
+                    },
+                    params: v => {
+                        document.querySelector('textarea[name="action[request][data]"]').value = JSON.stringify(v, null, 2);
+                    }
+                },
+                update_service: v => {
+                    document.querySelector('textarea[name="action[update_service]"]').value = JSON.stringify(v, null, 2);
+                }
+            },
+            description: v => {
+                document.querySelector('input[name="description"]').value = v;
+            },
+            count: v => {
+                document.querySelector('input[name="count"]').value = v;
+            },
+            time_to_live: v => {
+                document.querySelector('input[name="time_to_live"]').value = (() => {
+                    // Given 13-digit timestamp
+                    const timestampMs = v;
+
+                    // Convert timestamp to Date object
+                    const date = new Date(timestampMs);
+
+                    // Convert to datetime string (e.g., "2024-03-04T14:12")
+                    // Note: This uses UTC time to match the original string format
+                    const dtStr = date.getUTCFullYear() + '-' +
+                        ('0' + (date.getUTCMonth() + 1)).slice(-2) + '-' + // Months are 0-based
+                        ('0' + date.getUTCDate()).slice(-2) + 'T' +
+                        ('0' + date.getUTCHours()).slice(-2) + ':' +
+                        ('0' + date.getUTCMinutes()).slice(-2);
+
+                    return dtStr;
+                })();
+            }
+        }
+        checkParams(ticket, params);
+    }
 
     skapi.getTickets({
         service: proxyService
     }).then(tickets => {
-        console.log(tickets);
         for (let t of tickets.list) {
+            ticketList[t.ticket_id] = t;
             let description = t.description;
             let timestamp = t.timestamp;
             let ticket_id = t.ticket_id;
             let row = /*html*/`
                 <td><button onclick="delete_ticket('${ticket_id}')">Delete</button></td>
                 <td><button onclick="list_consumed('${ticket_id}')">Consumed</button></td>
+                <td><button onclick="edit_ticket('${ticket_id}')">EDIT</button></td>
                 <td>${ticket_id}</td>
                 <td>${description}</td>
             `;
@@ -410,161 +660,249 @@
         }).then(res => console.log(res));
     }
 
+    function seeLog(log) {
+        event.stopPropagation();
+        if (!log) return;
+        document.getElementById('log').innerText = JSON.stringify(JSON.parse(log), null, 2);
+        logDia.showModal();
+    }
+
     let currentConsumeDisplay = '';
     function list_consumed(ticket_id) {
         if (currentConsumeDisplay !== ticket_id) {
-            consumed_tickets.innerHTML = /*html*/`
-                <tr>
-                    <th>Time</th>
-                    <th>User</th>
-                </tr>`;
             currentConsumeDisplay = ticket_id;
         }
 
         skapi.getTickets({
             service: proxyService,
             ticket_id: '#' + ticket_id + '#'
+        }, {
+            ascending: false
         }).then(tickets => {
-            console.log(tickets);
             currentConsumeDisplay = ticket_id;
             for (let t of tickets.list) {
                 let user_id = t.user_id;
                 let timestamp = t.timestamp;
+                let description = JSON.stringify(t.description);
                 let date = new Date(timestamp).toLocaleString().split(' GMT')[0];
                 let row = /*html*/`
                     <td>${date}</td>
-                    <td>${user_id}</td>`;
+                    <td>${user_id}</td>
+                    <td><button onclick='seeLog(${description})'>See Log</td>
+                `;
 
                 let tr = document.createElement('tr');
                 tr.innerHTML = row;
                 consumed_tickets.appendChild(tr);
             }
+            // scroll to consumed_tickets
+            consumed_tickets.scrollIntoView();
         });
     }
 
-    let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m']; // test
-    // let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
     let setValueWhenMatch = [2, 3];
 
     function registerTicket(event) {
         event.preventDefault();
-        let data = skapi.extractFormData(event).data;
+        let data = skapi.util.extractFormData(event).data;
         jsonCrawler(data).forEach(v => {
             let delParent = data;
-            if (v.key === 'url' && v.value === '') {
+            if ((v.key === 'url' || v.key === 'key' || (v.key === 'value' && v.siblings.includes('key'))) && v.value === '') {
+                // ignore request form without url,
+                // ignore key value pair without key
                 for (let k of v.path.slice(0, -1)) {
-                    delParent = delParent[k]
+                    if (delParent && k in delParent) {
+                        delParent = delParent[k];
+                    }
+                    else {
+                        return;
+                    }
                 }
                 delete delParent[v.path[v.path.length - 1]];
             }
             else if (v.value === '' && typeof v.key === 'string') {
+                // delete key with empty value
                 for (let k of v.path) {
-                    delParent = delParent[k]
+                    if (delParent && k in delParent) {
+                        delParent = delParent[k];
+                    }
+                    else {
+                        return;
+                    }
                 }
                 delete delParent[v.key];
             }
         });
         jsonCrawler(data).forEach(v => {
-            if (v.key === 'operator' && !v.siblings.length || typeof v.value === 'object' && !Array.isArray(v.value)) {
-                let delParent = data;
-                for (let k of v.path) {
-                    if (k in delParent) {
-                        delParent = delParent[k]
+            let delParent = data;
+            if (v.key === 'operator' && (!v.siblings.length || v.siblings.includes('value'))) {
+                // remove operator key without value
+                for (let k of v.path.slice(0, -1)) {
+                    if (delParent && k in delParent) {
+                        delParent = delParent[k];
                     }
                     else {
-                        break;
+                        return;
                     }
                 }
-                delete delParent[v.key];
+
+                if (v.siblings.length === 1 && v.siblings[0] === 'value') {
+                    // delete operator key without value
+                    let proceed = true;
+
+                    if (Array.isArray(delParent?.value)) {
+                        for (let v of delParent.value) {
+                            if (v) {
+                                proceed = false;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        proceed = !delParent.value;
+                    }
+
+                    if (proceed) {
+                        delete delParent[v.path[v.path.length - 1]];
+                    }
+                }
+                else {
+                    delete delParent[v.path[v.path.length - 1]];
+                }
             }
         });
-        // jsonCrawler(data).forEach(v=>{
-        //     if(v.key === 'operator' && !v.siblings.length || typeof v.value === 'object' && !Array.isArray(v.value)) {
-        //         let delParent = data;
-        //         for(let k of v.path) {
-        //             if(k in delParent) {
-        //                 delParent = delParent[k]
-        //             }
-        //             else {
-        //                 break;
-        //             }
-        //         }
-        //         delete delParent[v.key];
-        //     }
-        // });
-        console.log(data);
 
-        // skapi.registerTicket({
-        //     service: proxyService,
-        //     ticket_id: 'delete-plan',
-        //     placeholder: {
-        //         SERVICE_ID: 'data[object][metadata][service]',
-        //         SUBSCRIPTION_ID: 'data[object][id]',
-        //         OWNER_ID: 'data[object][metadata][owner]',
-        //     },
-        //     condition: {
-        //         method: 'post',
-        //         data: [
-        //             {
-        //                 key: 'data[object][plan][id]',
-        //                 value,
-        //                 operator: '=',
-        //                 setValueWhenMatch
-        //             }
-        //         ]
-        //     },
-        //     action: {
-        //         update_service: {
-        //             action: -1,
-        //             group: 'data[object][plan][id]',
-        //             sub_item: 'data[object][items][data][0][id]'
-        //         }
-        //     },
-        //     description: 'Subscription plan deleted.'
-        // }).then(res => {
-        //     console.log(res);
-        // }).catch(err => {
-        //     alert(err.message);
-        // });
-        // skapi.registerTicket({
-        //     service: proxyService,
-        //     ticket_id: 'subscribe-plan',
-        //     placeholder: {
-        //         SERVICE_ID: 'data[object][metadata][service]',
-        //         SUBSCRIPTION_ID: 'data[object][id]',
-        //         OWNER_ID: 'data[object][metadata][owner]',
-        //     },
-        //     condition: {
-        //         bypassConditionMismatch: true,
-        //         method: 'post',
-        //         data: [
-        //             {
-        //                 key: 'data[object][plan][id]',
-        //                 value,
-        //                 operator: '=',
-        //                 setValueWhenMatch
-        //             },
-        //             {
-        //                 key: 'data[object][status]',
-        //                 value: ['active', 'incomplete_expired'],
-        //                 operator: '=',
-        //                 setValueWhenMatch: [1, -1],
-        //             }
-        //         ]
-        //     },
-        //     action: {
-        //         update_service: {
-        //             action: 'data[object][status]',
-        //             group: 'data[object][plan][id]',
-        //             sub_item: 'data[object][items][data][0][id]'
-        //         }
-        //     },
-        //     description: 'Subscribed to a plan.'
-        // }).then(res => {
-        //     console.log(res);
-        // }).catch(err => {
-        //     alert(err.message);
-        // });
+        if (data?.placeholder) {
+            try {
+                data.placeholder = JSON.parse(data.placeholder);
+            }
+            catch (e) {
+                alert('Invalid JSON format in placeholder.');
+                return;
+            }
+        }
+
+        function parseArrayStruct(objParent) {
+            /*
+            {
+                key: ['key1', 'key2'],
+                value: ['value1', 'value2']
+            }
+
+            ...to
+            
+            [
+                {key: 'key1', value: 'value1'},
+                {key: 'key2', value: 'value2'}
+            ]
+            */
+            let objArr = [];
+            let keys = Object.keys(objParent);
+
+            if (Array.isArray(objParent[keys[0]])) {
+                let arr = objParent[keys[0]]; // objParent.key = [..., ...]
+                for (let i = 0; i < arr.length; i++) {
+                    let obj = {};
+                    for (let k of keys) {
+                        obj[k] = objParent[k][i];
+                    }
+                    objArr.push(obj);
+                }
+
+                return objArr;
+            }
+            else {
+                return objParent
+            }
+        }
+
+        if (data?.condition?.headers) {
+            data.condition.headers = parseArrayStruct(data.condition.headers);
+        }
+        if (data?.condition?.data) {
+            data.condition.data = parseArrayStruct(data.condition.data);
+        }
+        if (data?.condition?.user) {
+            data.condition.user = parseArrayStruct(data.condition.user);
+        }
+
+        let conditionRequest = data?.condition?.request;
+
+        if (conditionRequest) {
+            if (conditionRequest.headers) {
+                try {
+                    conditionRequest.headers = JSON.parse(conditionRequest.headers);
+                }
+                catch (e) {
+                    alert('Invalid JSON format in condition request headers.');
+                    return;
+                }
+            }
+            if (conditionRequest.data) {
+                try {
+                    conditionRequest.data = JSON.parse(conditionRequest.data);
+                }
+                catch (e) {
+                    alert('Invalid JSON format in condition request data.');
+                    return;
+                }
+            }
+            if (conditionRequest.match) {
+                conditionRequest.match = parseArrayStruct(conditionRequest.match);
+            }
+        }
+
+        let action = data.action;
+        if (Object.keys(action).length === 0) {
+            delete data.action;
+        }
+        else {
+            if (action.update_service) {
+                try {
+                    action.update_service = JSON.parse(action.update_service);
+                }
+                catch (e) {
+                    alert('Invalid JSON format in action update service.');
+                    return;
+                }
+            }
+
+            let actionRequest = action?.request;
+            if (actionRequest) {
+                if (actionRequest.headers) {
+                    try {
+                        actionRequest.headers = JSON.parse(actionRequest.headers);
+                    }
+                    catch (e) {
+                        alert('Invalid JSON format in action request headers.');
+                        return;
+                    }
+                }
+                if (actionRequest.data) {
+                    try {
+                        actionRequest.data = JSON.parse(actionRequest.data);
+                    }
+                    catch (e) {
+                        alert('Invalid JSON format in action request data.');
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (data.time_to_live) {
+            data.time_to_live = new Date(data.time_to_live).getTime();
+        }
+
+        let conf = confirm('Are you sure you want to register this ticket?');
+        if (!conf) return;
+
+        skapi.registerTicket(data).then(res => {
+            ticketList[data.ticket_id] = data;
+            alert('Ticket registered.');
+        }).catch(err => {
+            alert(err.message);
+        });
     }
 </script>
 <style>
@@ -575,69 +913,3 @@
         box-sizing: border-box;
     }
 </style>
-<!-- 
-<style>
-    /* input styling */
-    .input-field {
-        width: 100%;
-        line-height: 0;
-        /* display: inline-block; */
-        display: inline-flex;
-        background-color: white;
-        position: relative !important;
-        align-items: center;
-        justify-content: space-around;
-
-        box-sizing: border-box;
-        padding: 4px;
-    }
-
-    .input-field>* {
-        vertical-align: middle;
-        display: inline-block;
-        margin: 0;
-        box-sizing: border-box;
-    }
-
-    .input-field>*:first-child {
-        flex-grow: 1;
-    }
-
-    .input-field>.embed {
-        display: inline-flex;
-        /* padding: 4px; */
-    }
-
-    .input-field>.embed>* {
-        max-height: 100%;
-    }
-
-    .input-field>.styler {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        border: 1px solid rgba(0, 0, 0, 0.5);
-    }
-
-    .input-field>input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
-        padding: 0 4px 0 12px;
-        /* padding: 0 0 0 12px; */
-        font-size: 16px;
-        border: none;
-    }
-
-    .input-field>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
-        outline: none;
-        border: none;
-        box-shadow: none;
-    }
-
-    .input-field>input:focus~.styler {
-        outline: 1px solid rgb(0, 0, 0, 0.5);
-        border: 1px solid black;
-    }
-</style> -->
