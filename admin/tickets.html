@@ -6,12 +6,8 @@
 <script src="tickets.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsoncrawler@0.2.1/jsoncrawler.js"></script>
-<script>
-    const skapi = new Skapi("ap220VneiKiyIzgLeFEc", "f8e16604-69e4-451c-9d90-4410f801c006");
-</script>
-<!-- <script>
-    const skapi = new Skapi("ap212Oua4WPuUkTTxckv", "4d4a36a5-b318-4093-92ae-7cf11feae989", { autoLogin: true }, { "hostDomain": "skapi.app", "target_cdn": "d1wrj5ymxrt2ir" });
-</script> -->
+<script src="/skapi.js"></script>
+
 <div style="display: flex; align-items: center; justify-content: space-between;">
     <h2>Tickets</h2>
     <a href="/admin/index.html">Back</a>
@@ -446,12 +442,6 @@
     body.addEventListener('click', function (e) {
         logDia.close();
     });
-
-    // let proxyService = 'eu71zettahertzesskpi'; // test
-    let proxyService = 'us31zettahertzesskpi'; // live
-    
-    // let value = ['price_1OUCt6HfHjKTnB39IwJasJEy', 'price_1OeZSqHfHjKTnB395Ai9fY4m']; // test
-    let value = ['price_1OlIoyHfHjKTnB393KyKOkU5', 'price_1OlIqCHfHjKTnB39wcQVEmyj']; // live
     
     document.getElementById('serviceIdInput').value = proxyService;
 
