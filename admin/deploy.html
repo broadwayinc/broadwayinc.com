@@ -42,7 +42,7 @@
         document.getElementById("overlay").style.display = 'flex';
 
         skapi.secureRequest({
-            url: "http://seoul.broadwayinc.computer:3000/deploy",
+            url: "https://api.broadwayinc.computer/deploy",
         })
             .then(res => {
                 alert(res.response);
