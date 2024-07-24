@@ -4,136 +4,40 @@
 <title>broadway Inc.</title>
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
+<script type='module' src="https://cdn.jsdelivr.net/npm/skateui@latest/dist/skateui/skateui.esm.js"></script>
 <link rel="stylesheet" href="style.css">
 <script src="util.js"></script>
 <script src="/skapi.js"></script>
 
-<br>
-
-<small>broadway Inc.</small>
-
-<article>
-  <h1>Redefining Web Development for the Digital Age</h1>
-  <h4>Navigating Modern Challenges:</h4>
-  <p>
-    As the demand for data surges, energy consumption at data centers has increased, posing environmental and operational challenges. Many enterprises are still reliant on database paradigms from the 1970s. While these systems are reliable, they fail to meet the evolving needs of modern data management and AI integration, which require more adaptable and efficient solutions. Moreover, some countries face land scarcity, making it challenging to build data centers that can keep up with today’s internet demands.
-  </p>
-
-  <h4>A Revolutionary Data Paradigm:</h4>
-  <p>
-    We propose a new paradigm in which users own their data and determine how it should be stored and accessed. This user-centric approach eliminates the need for traditional backend database schemas and reduces the need for additional servers. By shifting security logic and indexing directly to the client, we minimize backend infrastructure, thereby cutting energy use and costs. This shift not only optimizes resources but also enhances flexibility and privacy.
-  </p>
-
-
-  <h2>Introducing Skapi: Database as a Service:</h2>
-
-  <p>
-    Skapi seamlessly connects your applications to our robust serverless API, enabling the development of full-stack web applications without traditional backend servers. This simplification allows developers to focus entirely on the application itself, free from the complexities of backend management.
-  </p>
-  <h4>Packed with Features, Designed for Flexibility:</h4>
-  <p>
-    Skapi comes equipped with essential features like user security, content delivery networks (CDN), automated emails, file storage, and real-time data updates—all integrated effortlessly into your frontend. Compatible with vanilla HTML and various frontend frameworks, Skapi ensures that HTML and JavaScript are all you need to develop sophisticated web services.
-  </p>
-  <h4>Experience the Power of Skapi:</h4>
-  <p>
-    Discover how Skapi can transform your web development projects. Visit us at <a href="https://www.skapi.com" target="_blank">www.skapi.com</a> to learn more.
-  </p>  
-</article>
-
-<br>
-
-<hr>
-
-<section>
-  <h3>Subscribe to our Newsletter</h3>
-  <p>
-    Be the first to know about our new services, updates, and special offers.
-  </p>
-  <form onsubmit="disableForm(this);skapi.subscribeNewsletter(event).then(res => alert(res.split(': ')[1]))">
-    <input hidden name="redirect" value="/ns-subscribed.html" />
-    <input hidden name="group" value="public" />
-
-    <span class="input-field"><input type="email" name="email" placeholder='your@email.com' required /><span
-        class="embed right"><input class='button' type="submit" value="Subscribe" /></span><span
-        class="styler"></span></span>
-  </form>
-</section>
-
-<br>
-<br>
-
-<footer>
-  <small>broadway Inc. 101-3302, 109 Mapo-daero, Mapo-gu, Seoul, 04146, Republic of Korea</small>
-</footer>
+<main>
+  <sui-flextext max-size="188">broadway Inc.</sui-flextext>
+  <div>
+    <small>
+      Web Development, Music Production
+      <br>
+      <a href="https://www.skapi.com">www.skapi.com</a>
+      <br>
+      Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> Mapo-gu, Seoul, <span>Republic of Korea.</span> <span>ZIP: 03997</span>
+    </small>
+  </div>
+</main>
 
 <style>
   body {
-    display: block;
-    margin: auto;
-    max-width: 1200px;
-  }
-
-  form {
-    margin-top: 16px;
-  }
-
-  .input-field {
-    margin-bottom: 8px;
-  }
-
-  ol {
-    padding-left: 1em;
-  }
-
-  /* input styling */
-  .input-field {
-    line-height: 0;
-    display: inline-block;
-    background-color: white;
-    position: relative !important;
-  }
-
-  .input-field>* {
-    vertical-align: middle;
-    display: inline-block;
     margin: 0;
-    box-sizing: border-box;
+    padding: 0;
+    background-color: #f8f8f8;
   }
-
-  .input-field>.embed {
-    display: inline-flex;
-    padding: 4px;
+  span {
+    display: inline-block;
   }
-
-  .input-field>.embed>* {
-    max-height: 100%;
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
   }
-
-  .input-field>.styler {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-  }
-
-  .input-field>input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
-    padding: 0 2px 0 16px;
-    font-size: 16px;
-    border: none;
-  }
-
-  .input-field>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
-    outline: none;
-    border: none;
-    box-shadow: none;
-  }
-
-  .input-field>input:focus~.styler {
-    outline: 1px solid rgb(0, 0, 0, 0.5);
-    border: 1px solid black;
+  sui-flextext {
+    margin-bottom: 2rem;
   }
 </style>
