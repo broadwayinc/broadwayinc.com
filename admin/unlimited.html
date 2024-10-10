@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script src="../util.js"></script>
+<script src="/skapi.js"></script>
+
+<main>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <a href="/admin/index.html">Back</a>
+    </div>
+    <hr>
+    <p>This action will grant unlimited service.</p>
+    
+    <label>
+        <small>Service ID</small>
+        <br>
+        <input type="text" id="serviceId" placeholder="Service ID">
+    </label>
+    
+    <label>
+        <small>Owner's ID</small>
+        <br>
+        <input type="text" id="ownerId" placeholder="Owner's ID">
+    </label>
+
+    <style>
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        label>input {
+            width: 100%;
+        }
+    </style>
+    <div>
+        <button style='float: right;' id="deployButton" onclick="grant()">Grant Unlimited</button>
+    </div>
+</main>
+<script>
+    skapi.getProfile().then(u => {
+        if (!u) {
+            window.location.href = "/admin/login.html";
+        }
+    });
+
+    function grant() {
+        serviceId.disabled = true;
+        ownerId.disabled = true;
+        deployButton.disabled = true;
+        skapi.secureRequest({
+            url: "https://api.broadwayinc.computer//make-unlimited",
+            data: {
+                service: serviceId.value,
+                owner: ownerId.value
+            }
+        })
+            .then(res => {
+                alert(res.response);
+                window.location.href = "/admin/index.html";
+            })
+            .catch(err => {
+                deployButton.disabled = false;
+                serviceId.disabled = false;
+                ownerId.disabled = false;
+                alert(err.message);
+            });
+    }
+
+</script>
