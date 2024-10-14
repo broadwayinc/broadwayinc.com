@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script src="../util.js"></script>
+<script src="/skapi.js"></script>
+
+<main>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <h2>www.skapi.com</h2>
+        <a href="/admin/index.html">Back</a>
+    </div>
+    <hr>
+    <p>This action will deploy the recent version of the teklium.com website.</p>
+    <p>Make sure that:</p>
+    <ul>
+        <li>npm i skapi-js@latest</li>
+        <li>You have checked essential functionalities within the website.</li>
+        <li>You have pushed the latest version of the website</li>
+    </ul>
+    <p>Once all above is checked you may proceed and deploy.</p>
+    <div>
+        <button style='float: right;' id="deployButton" onclick="deploy()">Deploy</button>
+    </div>
+</main>
+<div id="overlay">
+    <h1 id="loaderScreen"></h1>
+</div>
+<script>
+    skapi.getProfile().then(u => {
+        if (!u) {
+            window.location.href = "/admin/login.html";
+        }
+    });
+
+    function deploy() {
+        deployButton.disabled = true;
+        runLoader(loaderScreen);
+
+        document.getElementById("overlay").style.display = 'flex';
+
+        skapi.secureRequest({
+            url: "https://api.broadwayinc.computer/deploy-tek",
+        })
+            .then(res => {
+                alert(res.response);
+            })
+            .catch(err => {
+                deployButton.disabled = false;
+                alert(err.message);
+            })
+            .finally(() => {
+                stopLoader(loaderScreen);
+                document.getElementById("overlay").style.display = 'none';
+            });
+    }
+
+</script>
+<style>
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.66);
+    }
+
+    #loaderScreen {
+        user-select: none;
+        color: white;
+        opacity: 1;
+        line-height: 0;
+        margin: 0;
+    }
+</style>
