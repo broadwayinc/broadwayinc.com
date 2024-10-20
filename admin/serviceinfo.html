@@ -6,11 +6,43 @@
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
 <script src="../util.js"></script>
 <script src="/skapi.js"></script>
-
-<h1 style='margin:0;line-height: 0;' id="loading"></h1>
+<main id="form" style="width:400px">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <h2>Service Info</h2>
+        <a href="/admin/index.html">Back</a>
+    </div>
+    <hr>
+    <form onsubmit="runLoader(loading); form.hidden = true; skapi.secureRequest(event, 'https://api.broadwayinc.computer/service-info').then(show).catch(err=>{
+        stopLoader(loading);
+        form.hidden = false;
+    })">
+        <style>
+            label>input {
+                width: 100%;
+            }
+        </style>
+        <label>
+            <small>Service ID</small>
+            <br>
+            <input name="service" type="text" placeholder="20 Alphanumeric" required />
+        </label>
+        <br>
+        <label>
+            <small>Owner's ID</small>
+            <br>
+            <input name="owner" type="text" placeholder="Owner's UUID" required />
+        </label>
+        <br>
+        <br>
+        <div>
+            <input style="float: right;" type="submit" value="Submit" />
+        </div>
+    </form>
+</main>
+<h1 style='margin:0;line-height: 0;' id="loading" hidden></h1>
 <main id="info" hidden>
     <div style="display: flex; align-items: center; justify-content: space-between;">
-        <h2 >Skapi Information</h2>
+        <h2>Skapi Information</h2>
         <a href="/admin/index.html">Back</a>
     </div>
 
@@ -26,28 +58,20 @@
             <td>%users%</td>
         </tr>
         <tr>
+            <td><strong>Group</strong></td>
+            <td>%group% (50: Unlimited, 1: Trial, 2: Standard, 3: Premium)</td>
+        </tr>
+        <tr>
+            <td><strong>Active</strong></td>
+            <td>%active%</td>
+        </tr>
+        <tr>
             <td><strong>Newsletter subscribers</strong></td>
             <td>%newsletter_subscribers%</td>
         </tr>
         <tr>
             <td><strong>Serviceletter subscribers</strong></td>
             <td>%serviceletter_subscribers_01%</td>
-        </tr>
-        <tr>
-            <td><strong>Serviceletter</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com">
-                    us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td><strong>Newsletter</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com">
-                    us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com
-                </a>
-            </td>
         </tr>
     </table>
 
@@ -61,14 +85,6 @@
         the first time.
     </p>
     <table>
-        <tr>
-            <td><strong>Endpoint</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com">
-                    us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com
-                </a>
-            </td>
-        </tr>
         <tr>
             <td><strong>Subject</strong></td>
             <td>%template_welcome%</td>
@@ -85,14 +101,6 @@
     </p>
     <table>
         <tr>
-            <td><strong>Endpoint</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com">
-                    us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com
-                </a>
-            </td>
-        </tr>
-        <tr>
             <td><strong>Subject</strong></td>
             <td>%template_confirmation%</td>
         </tr>
@@ -108,14 +116,6 @@
     </p>
     <table>
         <tr>
-            <td><strong>Endpoint</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com">
-                    us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com
-                </a>
-            </td>
-        </tr>
-        <tr>
             <td><strong>Subject</strong></td>
             <td>%template_verification%</td>
         </tr>
@@ -130,19 +130,12 @@
     </p>
     <table>
         <tr>
-            <td><strong>Endpoint</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com">
-                    us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com
-                </a>
-            </td>
-        </tr>
-        <tr>
             <td><strong>Subject</strong></td>
             <td>%template_invitation%</td>
         </tr>
     </table>
 
+    
     <br>
     <br>
 
@@ -152,14 +145,6 @@
         The user receives this email when they subscribe to public newsletters.
     </p>
     <table>
-        <tr>
-            <td><strong>Endpoint</strong></td>
-            <td>
-                <a href="mailto:us31zettahertzesskpi-tp32335060dea3ba2082b588bfa4302df1@mail.skapi.com">
-                    us31zettahertzesskpi-tp32335060dea3ba2082b588bfa4302df1@mail.skapi.com
-                </a>
-            </td>
-        </tr>
         <tr>
             <td><strong>Subject</strong></td>
             <td>%template_newsletter_subscription%</td>
@@ -178,8 +163,8 @@
     //     'newsletters for invited users': 'us31zettahertzesskpi-02dea1790c7e9d9f69f2f23c245e6b8847@mail.skapi.com'
     // }
 
-    let loading_text = document.getElementById("loading");
-    runLoader(loading_text);
+    // let loading_text = document.getElementById("loading");
+    // runLoader(loading_text);
 
     skapi.getProfile().then(u => {
         if (!u) {
@@ -187,18 +172,25 @@
         }
     })
 
-    skapi.secureRequest({
-        url: "https://api.broadwayinc.computer/info",
-    }).then(r => {
-        console.log(r)
+    function show(r) {
+
+        r.response = r.response.Item;
+
+        console.log({ r })
+
+        let info = document.getElementById("info");
+
         let keys = [
             "users",
             "newsletter_subscribers",
             "serviceletter_subscribers_01",
-            "email"
+            "email",
+            "group",
+            "active"
         ];
+
         for (let key of keys) {
-            document.getElementById("info").innerHTML = document.getElementById("info").innerHTML.replace(`%${key}%`, r.response[key]);
+            info.innerHTML = document.getElementById("info").innerHTML.replace(`%${key}%`, r.response?.[key] === undefined ? 'N/A' : r.response[key]);
         }
         let templates = [
             "template_welcome",
@@ -209,18 +201,19 @@
         ];
 
         function composeLink(link, subject) {
-            if(!link) return 'N/A';
+            if(!link) 'N/A';
             return `<a href="${link}">${subject}</a>`;
         }
 
-        let info = document.getElementById("info");
         for (let template of templates) {
-            info.innerHTML = info.innerHTML.replace(`%${template}%`, composeLink(r.response[template]?.url, r.response[template]?.subject));
+            if (!r.response[template]) continue;
+            info.innerHTML = info.innerHTML.replace(`%${template}%`, composeLink(r.response[template].url, r.response[template]?.subject));
         }
 
-        stopLoader(loading_text);
-        document.getElementById("info").hidden = false;
-    })
+        stopLoader(loading);
+        info.hidden = false;
+        document.getElementById("form").hidden = true;
+    }
 
 </script>
 <style>
