@@ -9,18 +9,17 @@
 
 <main>
     <div style="display: flex; align-items: center; justify-content: space-between;">
-        <h2>www.teklium.com</h2>
+        <h2>Skapi JS Beta</h2>
         <a href="/admin/index.html">Back</a>
     </div>
     <hr>
-    <p>This action will deploy the recent version of the teklium.com website.</p>
+    <p>This action will deploy the recent version of the skapi-js beta.</p>
     <p>Make sure that:</p>
     <ul>
-        <li>npm i skapi-js@latest</li>
-        <li>You have checked essential functionalities within the website.</li>
-        <li>You have pushed the latest version of the website</li>
+        <li>You have merged the latest version of skapi-js</li>
+        <li>You have updated the version of package.js</li>
+        <li>You have checked the __version properties.</li>
     </ul>
-    <p>The CDN origin URL is: <a href='https://d35b2lpetkx0dh.cloudfront.net/'>https://d35b2lpetkx0dh.cloudfront.net/</a></p>
     <p>Once all above is checked you may proceed and deploy.</p>
     <div>
         <button style='float: right;' id="deployButton" onclick="deploy()">Deploy</button>
@@ -43,7 +42,7 @@
         document.getElementById("overlay").style.display = 'flex';
 
         skapi.secureRequest({
-            url: "https://api.broadwayinc.computer/deploy-tek",
+            url: "https://api.broadwayinc.computer/deploy-skapi-js-beta",
         })
             .then(res => {
                 alert(res.response);
