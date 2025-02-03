@@ -4,41 +4,74 @@
 <title>broadway Inc.</title>
 <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
-<script type='module' src="https://cdn.jsdelivr.net/npm/skateui@latest/dist/skateui/skateui.esm.js"></script>
 <link rel="stylesheet" href="style.css">
 <script src="util.js"></script>
 <script src="/skapi.js"></script>
 
 <main>
-  <sui-flextext max-size="188">broadway Inc.</sui-flextext>
-  <div>
-    <small>
-      Web Development, Music Production
-      <br>
-      <a href="https://www.skapi.com">www.skapi.com</a>
-      <!-- <br> -->
-      <!-- BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore 059817 -->
-      <!-- Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> Mapo-gu, Seoul, <span>Republic of Korea.</span> <span>ZIP: 03997</span> -->
-    </small>
-  </div>
+    <h1>broadway Inc.</h1>
+
+    <br>
+
+    <div>
+        <h3>Welcome</h3>
+        <p>
+            At broadway Inc., we believe in talent, dedication, and the power of innovation. Our mission is to empower individuals—regardless of their background—to achieve success and make a meaningful impact on the world. Through cutting-edge technology, we help businesses thrive by simplifying backend development.
+        </p>
+
+        <br>
+
+        <h3>Skapi: <span>Next-Gen Backend API Service</span></h3>
+        <p>
+            Skapi is a powerful yet accessible backend API service that enables anyone with basic HTML and JavaScript knowledge to build full-fledged web applications—without the complexity of managing servers or databases.
+        </p>
+        <p>
+            With a completely serverless architecture, Skapi connects your client-side application directly to backend resources, drastically reducing development time and costs. It also supports advanced business logic and data processing with ease, making it a game-changer for modern businesses.
+        </p>
+        <p>
+            👉 Experience Skapi at <a href="https://www.skapi.com">skapi.com</a>
+        </p>
+    </div>
+
+    <br>
+    
+    <p>
+        <small>
+            CEO: <span>Baksa Gimm</span>
+        </small>
+        <br>
+        <small>
+            BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore 059817
+        </small>
+        <br>
+        <small>
+            Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> Mapo-gu, Seoul, <span>Republic of Korea.</span>
+            <span>ZIP: 03997</span>
+        </small>
+        <br>
+        <small>
+            © <span id="year"></span> broadway Inc. All rights reserved.
+        </small>
+        
+        <script>
+            document.getElementById('year').innerText = new Date().getFullYear();
+        </script>
+    </p>
 </main>
 
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    background-color: #f8f8f8;
-  }
-  span {
-    display: inline-block;
-  }
-  main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-  }
-  sui-flextext {
-    margin-bottom: 2rem;
-  }
+    h1 {
+        font-size: clamp(60px, 14vw, 9rem);
+        font-weight: normal;
+        line-height: 1;
+    }
+    
+    main {
+        width: 1400px;
+        max-width: 100%;
+    }
+
+    span {
+        display: inline-block;
+    }
 </style>

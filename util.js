@@ -11,7 +11,10 @@ function enableForm(form) {
 }
 
 let _loaderId;
-function runLoader(loading_text_el){
+function runLoader(loading_text_el) {
+    if (_loaderId) {
+        clearInterval(_loaderId);
+    }
     let text_array = [".", "..", "...", ""];
     let index = 0;
     loading_text_el.hidden = false;
@@ -24,7 +27,7 @@ function runLoader(loading_text_el){
 function stopLoader(loading_text_el, callback) {
     clearInterval(_loaderId);
     loading_text_el.hidden = true;
-    if(typeof callback === "function") {
+    if (typeof callback === "function") {
         callback();
     }
 }
