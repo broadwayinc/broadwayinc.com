@@ -2,72 +2,95 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>broadway Inc.</title>
-<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
 <link rel="stylesheet" href="style.css">
-<script src="util.js"></script>
-<script src="/skapi.js"></script>
+<!-- <script src="util.js"></script> -->
+<!-- <script src="/skapi.js"></script> -->
 
 <main>
-    <h1>broadway Inc.</h1>
+    <h1>Welcome to <span style="color:yellow">broadway Inc.</span></h1>
 
-    <br>
-
-    <div>
-        <h3>Welcome</h3>
-        <p>
-            At broadway Inc., we believe in talent, dedication, and the power of innovation. Our mission is to empower individuals—regardless of their background—to achieve success and make a meaningful impact on the world. Through cutting-edge technology, we help businesses thrive by simplifying backend development.
-        </p>
-
-        <br>
-
-        <h3>Skapi: <span>Next-Gen Backend API Service</span></h3>
-        <p>
-            Skapi is a powerful yet accessible backend API service that enables anyone with basic HTML and JavaScript knowledge to build full-fledged web applications—without the complexity of managing servers or databases.
-        </p>
-        <p>
-            With a completely serverless architecture, Skapi connects your client-side application directly to backend resources, drastically reducing development time and costs. It also supports advanced business logic and data processing with ease, making it a game-changer for modern businesses.
-        </p>
-        <p>
-            👉 Experience Skapi at <a href="https://www.skapi.com">skapi.com</a>
-        </p>
-    </div>
-
-    <br>
-    
     <p>
-        <small>
-            CEO: <span>Baksa Gimm</span>
-        </small>
-        <br>
-        <small>
-            BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore 059817
-        </small>
-        <br>
-        <small>
-            Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> Mapo-gu, Seoul, <span>Republic of Korea.</span>
-            <span>ZIP: 03997</span>
-        </small>
-        <br>
-        <small>
-            © <span id="year"></span> broadway Inc. All rights reserved.
-        </small>
-        
-        <script>
-            document.getElementById('year').innerText = new Date().getFullYear();
-        </script>
+        At broadway Inc., we believe in the power of talent, dedication, and innovation.
     </p>
+    <p>
+        Our mission is to empower
+        individuals—regardless of their background—to achieve success and make a meaningful impact on the world.
+    </p>
+    <p>
+        Through cutting-edge technology, we help businesses thrive by simplifying backend development, enabling them to
+        focus on what truly matters: growth, creativity, and delivering exceptional value.
+    </p>
+
+    <h3>Skapi: <span>Next-Gen Backend API Service</span></h3>
+    <p>
+        Skapi is a powerful yet accessible backend API service that empowers anyone with basic HTML and JavaScript
+        knowledge to build full-fledged web applications—without the hassle of managing servers or databases.
+    </p>
+    <p>
+        With its fully serverless architecture, Skapi connects your client-side application directly to backend
+        resources, significantly reducing development time and costs. It's the ideal solution for developers and
+        businesses of all sizes who want to focus on building great services, not managing infrastructure.
+    </p>
+    <p>
+        👉 Experience Skapi at <a href="https://www.skapi.com">skapi.com</a>
+    </p>
+
+    <h3>Solutions for Big Data & AI Development</h3>
+    <p>
+        In today's information-driven world, efficient data processing is essential.
+    </p>
+    <p>
+        With our unique indexing technology and user-centric design, we deliver powerful database and security solutions specifically tailored to meet the needs of big data and AI-driven businesses—ensuring speed, scalability, and robust data protection.
+    </p>
+    
+    <br>
+
+    <hr>
+
+    <small>
+        CEO: <span>Baksa Gimm</span>
+    </small>
+    <br>
+    <small>
+        BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore 059817
+    </small>
+    <br>
+    <small>
+        Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> Mapo-gu, Seoul, <span>Republic of Korea.</span>
+        <span>ZIP: 03997</span>
+    </small>
+    <br>
+    <small>
+        © <span id="year"></span> broadway Inc. All rights reserved.
+    </small>
+
+    <script>
+        document.getElementById('year').innerText = new Date().getFullYear();
+    </script>
 </main>
 
 <style>
-    h1 {
-        font-size: clamp(60px, 14vw, 9rem);
-        font-weight: normal;
-        line-height: 1;
+    body {
+        background-color: black;
+        color: white;
     }
-    
+
+    a {
+        color: yellow;
+    }
+
+    h1 {
+        font-weight: normal;
+    }
+
+    h3 {
+        color: yellow;
+    }
+
     main {
-        width: 1400px;
+        width: 1200px;
         max-width: 100%;
     }
 
