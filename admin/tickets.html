@@ -625,7 +625,8 @@
     }
 
     skapi.getTickets({
-        service: proxyService
+        service: proxyService,
+        owner: 'skapi'
     }).then(tickets => {
         for (let t of tickets.list) {
             ticketList[t.ticket_id] = t;
@@ -669,6 +670,7 @@
 
         skapi.getTickets({
             service: proxyService,
+            owner: 'skapi',
             ticket_id: '#' + ticket_id + '#'
         }, {
             ascending: false
