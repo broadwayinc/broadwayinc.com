@@ -9,56 +9,62 @@
 <!-- <script src="/skapi.js"></script> -->
 
 <main>
-    <h1>Welcome to <span style="color:yellow">broadway Inc.</span></h1>
+    <br>
+
+    <h2>Hi, we are <span class='bold'>broadway Inc.</span></h2>
 
     <p>
-        We believe in the power of talent, dedication, and innovation.
-    </p>
-    
-    <p>
-        Through cutting-edge technology, we help businesses thrive by simplifying backend development, enabling them to
-        focus on what truly matters: growth, creativity, and delivering exceptional value.
+        We build a complete backend infrastructure that transforms your HTML page into a full-stack web application.
     </p>
 
-    <h3>Solutions for Big Data & AI Development</h3>
     <p>
-        We understand that in today's information-driven world, efficient data processing is key.
+        We are obsessed with making web development as simple and efficient as possible while preserving creativity and fun.
     </p>
+
     <p>
-        With our unique indexing technology and user-centric design, we deliver powerful database and security solutions specifically tailored to meet the needs of big data and AI-driven businesses—ensuring speed, scalability, and robust data protection.
+        We believe the best web development technology is <span class='bold'>plain HTML and JavaScript</span>—not bloated frameworks.
+        <br>
+        So, we set out to create a complete backend solution that works seamlessly with pure HTML.
     </p>
+
+    <br>
 
     <h3>Skapi: <span>Next-Gen Backend API Service</span></h3>
     <p>
         Skapi is a powerful yet accessible backend API service that empowers anyone with basic HTML and JavaScript
         knowledge to build full-fledged web applications—without the hassle of managing servers or databases.
-    </p>
-    <p>
+        <br><br>
         With its fully serverless architecture, Skapi connects your client-side application directly to backend
-        resources, significantly reducing development time and costs. It's the ideal solution for developers and
-        businesses of all sizes who want to focus on building great services, not managing infrastructure.
+        resources, significantly reducing development time and costs.
+        <br><br>
+        It's the ideal solution for developers and businesses of all sizes looking to focus on building great services,
+        not managing infrastructure.
     </p>
-    <p>
+
+    <p class="bold">
         👉 Experience Skapi at <a href="https://www.skapi.com">skapi.com</a>
     </p>
+    <p class="bold">
+        👉 See our latest projects on <a href="https://github.com/broadwayinc">GitHub</a>.
+    </p>
 
     <br>
-
-    <hr>
+    <br>
 
     <small>
-        CEO: <span>Baksa Gimm</span>
+        BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore ZIP: 059817
     </small>
+
     <br>
+    
     <small>
-        BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore 059817
-    </small>
-    <br>
-    <small>
-        Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> Mapo-gu, Seoul, <span>Republic of Korea.</span>
+        Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> <span>Mapo-gu,</span> Seoul, <span>Republic of Korea.</span>
         <span>ZIP: 03997</span>
     </small>
+    
     <br>
+    <br>
+    
     <small>
         © <span id="year"></span> broadway Inc. All rights reserved.
     </small>
@@ -70,24 +76,31 @@
 
 <style>
     body {
-        background-color: black;
-        color: white;
+        background-color: var(--offWhite);
+        color: var(--black);
+        font-size: 32px;
+    }
+    @media (max-width: 976px) {
+        body {
+            font-size: 22px;
+        }
+    }
+
+    .bold {
+        font-weight: 500;
     }
 
     a {
-        color: yellow;
+        color: var(--blue);
     }
 
-    h1 {
+    h1,
+    h2 {
         font-weight: normal;
     }
 
-    h3 {
-        color: yellow;
-    }
-
     main {
-        width: 1200px;
+        width: 976px;
         max-width: 100%;
     }
 

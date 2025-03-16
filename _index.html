@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>broadway Inc.</title>
+<!-- <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
+<link rel="stylesheet" href="style.css">
+<!-- <script src="util.js"></script> -->
+<!-- <script src="/skapi.js"></script> -->
+
+<main>
+    <!-- <h3>broadway Inc.</h3>
+
+    <hr> -->
+    <br>
+    <h2>Hi, we are <span class='bold'>broadway Inc.</span></h2>
+
+    <p>
+        We build a complete <span class='bold'>backend infrastructure</span> that enables generative AI to create
+        <span>full-stack</span> web applications.
+    </p>
+
+    <p>
+        While some attempts are being made to develop generative AI capable of writing software,
+        <span class='bold'>one major hurdle remains:</span> <span>AI lacks access</span> to backend infrastructure, such as databases and
+        servers—critical components for building web applications.
+    </p>
+
+    <p>
+        At <span class='bold'>Broadway Inc.</span>, we have solved this problem by creating a fully <span
+            class='bold'>serverless</span> infrastructure that securely grants generative AI direct access to backend
+        resources.
+        <br><br>
+
+        With this solution, you can now use your favorite generative AI model to build <span>full-stack</span> web
+        applications and generate code directly in a <span>client-side</span> HTML file.
+
+        <br><br>
+        We believe the future of software development lies in AI dynamically building applications in real time to meet
+        users' needs—and we are here to make that future a reality.
+    </p>
+
+    <br>
+
+    <h2>Our Products</h2>
+
+    <h3>Skapi: <span>Next-Gen Backend API Service</span></h3>
+    <p>
+        Skapi is a powerful yet accessible backend API service that empowers anyone with basic HTML and JavaScript
+        knowledge to build full-fledged web applications—without the hassle of managing servers or databases.
+        <br><br>
+        With its fully serverless architecture, Skapi connects your client-side application directly to backend
+        resources, significantly reducing development time and costs.
+        <br><br>
+        It's the ideal solution for developers and businesses of all sizes looking to focus on building great services,
+        not managing infrastructure.
+    </p>
+    <p class="bold">
+        👉 Experience Skapi at <a href="https://www.skapi.com">skapi.com</a>
+    </p>
+
+    <br>
+
+    <h3>Skatabase: <span>Solutions for Big Data & AI Development</span></h3>
+    <p>
+        With our unique indexing technology and self-governing design, we deliver powerful database and security
+        solutions tailored for big data and AI-driven businesses—ensuring speed, scalability, and robust data protection
+        while data owners retain full control and responsibility over their data.
+    </p>
+
+    <p class="bold">
+        👉 Sign up for early access at <a href="https://www.skatabase.ai">skatabase.ai</a>
+    </p>
+
+    <br>
+
+    <h3>Open Source</h3>
+    
+    <p class="bold">
+        👉 See our latest projects on <a href="https://github.com/broadwayinc">GitHub</a>.
+    </p>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <small>
+        BROADWAYINC PTE. LTD., 6 EU TONG SEN STREET #08-12 THE CENTRAL Singapore ZIP: 059817
+    </small>
+    <br>
+    <small>
+        Yohan House 2nd Floor, 24, <span>Seongmisan-Ro,</span> <span>Mapo-gu,</span> Seoul, <span>Republic of Korea.</span>
+        <span>ZIP: 03997</span>
+    </small>
+    
+    <br>
+    <br>
+    
+    <small>
+        © <span id="year"></span> broadway Inc. All rights reserved.
+    </small>
+
+    <script>
+        document.getElementById('year').innerText = new Date().getFullYear();
+    </script>
+</main>
+
+<style>
+    body {
+        background-color: var(--offWhite);
+        color: var(--black);
+        font-size: 32px;
+    }
+    @media (max-width: 976px) {
+        body {
+            font-size: 22px;
+        }
+    }
+
+    .bold {
+        font-weight: 500;
+    }
+
+    a {
+        color: var(--blue);
+    }
+
+    h1,
+    h2 {
+        font-weight: normal;
+    }
+
+    main {
+        width: 976px;
+        max-width: 100%;
+    }
+
+    span {
+        display: inline-block;
+    }
+
+    /* input styling */
+
+    form {
+        margin-top: 16px;
+    }
+
+    .input-field {
+        margin-bottom: 8px;
+    }
+
+    .input-field {
+        line-height: 0;
+        display: inline-block;
+        background-color: white;
+        position: relative !important;
+    }
+
+    .input-field>* {
+        vertical-align: middle;
+        display: inline-block;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .input-field>.embed {
+        display: inline-flex;
+        padding: 4px;
+    }
+
+    .input-field>.embed>* {
+        max-height: 100%;
+    }
+
+    .input-field>.styler {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .input-field>input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
+        padding: 0 2px 0 16px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .input-field>input:focus:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="button"]) {
+        outline: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .input-field>input:focus~.styler {
+        outline: 1px solid rgb(0, 0, 0, 0.5);
+        border: 1px solid black;
+    }
+</style>

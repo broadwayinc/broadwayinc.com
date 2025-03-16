@@ -1,10 +1,18 @@
-@font-face {
+/* @font-face {
     font-family: 'Avenir';
     src: url('/fonts/Avenir.woff') format('woff');
-}
+} */
+/* @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz@0,6..72;1,6..72&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 body {
-    font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
+    font-family: "IBM Plex Serif", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
     --color-danger: #f04e4e;
 
     display: flex;
@@ -15,6 +23,18 @@ body {
     box-sizing: border-box;
     padding: .5em;
     margin: 0;
+    
+    --offWhite: #f7f7f7;
+    --maxWidth: 1000px;
+    --blue: #293fe6;
+}
+
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+    font-style: normal;
 }
 
 html {
