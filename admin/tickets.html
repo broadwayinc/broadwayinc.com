@@ -445,10 +445,6 @@
     
     document.getElementById('serviceIdInput').value = proxyService;
 
-    skapi.getProfile().then(u => {
-        console.log(u)
-    });
-
     let ticketList = {}
 
     function implementKeyValueInputs(obj, inpName, adder) {
