@@ -10,7 +10,7 @@
 <h1 style='margin:0;line-height: 0;' id="loading"></h1>
 <main id="info" hidden>
     <div style="display: flex; align-items: center; justify-content: space-between;">
-        <h2 >Skapi Information</h2>
+        <h2>Skapi Information</h2>
         <a href="/admin/index.html">Back</a>
     </div>
 
@@ -36,16 +36,16 @@
         <tr>
             <td><strong>Serviceletter</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com">
-                    us31zettahertzesskpi-01c37a8b044c17d3898a02cc9592cbac3c@mail.skapi.com
+                <a id="endpoint_serviceletter">
+                    N/A
                 </a>
             </td>
         </tr>
         <tr>
             <td><strong>Newsletter</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com">
-                    us31zettahertzesskpi-008eba00cbfc84206c66db5d5be7d3616f@mail.skapi.com
+                <a id="endpoint_newsletter">
+                    N/A
                 </a>
             </td>
         </tr>
@@ -64,8 +64,8 @@
         <tr>
             <td><strong>Endpoint</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com">
-                    us31zettahertzesskpi-tp0d10e39dae4544f55ef23b9a7514bccc@mail.skapi.com
+                <a id="endpoint_welcome">
+                    N/A
                 </a>
             </td>
         </tr>
@@ -87,8 +87,8 @@
         <tr>
             <td><strong>Endpoint</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com">
-                    us31zettahertzesskpi-tp4c837c624e7c67358cee79a2dfe3ae23@mail.skapi.com
+                <a id="endpoint_confirmation">
+                    N/A
                 </a>
             </td>
         </tr>
@@ -110,8 +110,8 @@
         <tr>
             <td><strong>Endpoint</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com">
-                    us31zettahertzesskpi-tp4dfc5c55fbe8bfdf27e7b167b9b74640@mail.skapi.com
+                <a id="endpoint_verification">
+                    N/A
                 </a>
             </td>
         </tr>
@@ -132,8 +132,8 @@
         <tr>
             <td><strong>Endpoint</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com">
-                    us31zettahertzesskpi-tpb72f557af1a87dd80e48881241fe135a@mail.skapi.com
+                <a id="endpoint_invitation">
+                    N/A
                 </a>
             </td>
         </tr>
@@ -155,8 +155,8 @@
         <tr>
             <td><strong>Endpoint</strong></td>
             <td>
-                <a href="mailto:us31zettahertzesskpi-tp32335060dea3ba2082b588bfa4302df1@mail.skapi.com">
-                    us31zettahertzesskpi-tp32335060dea3ba2082b588bfa4302df1@mail.skapi.com
+                <a id="endpoint_newsletter_subscription">
+                    N/A
                 </a>
             </td>
         </tr>
@@ -187,41 +187,83 @@
         }
     })
 
-    skapi.secureRequest({
-        url: "https://api.broadwayinc.computer/info",
-    }).then(r => {
-        console.log(r)
-        let keys = [
-            "users",
-            "newsletter_subscribers",
-            "serviceletter_subscribers_01",
-            "email"
-        ];
-        for (let key of keys) {
-            document.getElementById("info").innerHTML = document.getElementById("info").innerHTML.replace(`%${key}%`, r.response[key]);
-        }
-        let templates = [
-            "template_welcome",
-            "template_confirmation",
-            "template_verification",
-            "template_invitation",
-            "template_newsletter_subscription"
-        ];
+    // let sndr = skapi.util.request(
+    //   this.admin_private_endpoint + 'request-newsletter-sender',
+    //   Object.assign({ service: this.id, owner: this.owner }, skapi.util.extractFormData(params).data || {}),
+    //   { auth: true }
+    // );
+    // this.newsletterSender[params.group_numb] = sndr;
 
-        function composeLink(link, subject) {
-            if(!link) return 'N/A';
-            return `<a href="${link}">${subject}</a>`;
-        }
+    let privateEndpoint = skapi.admin_endpoint.then(ep => {
+        skapi.util.request(
+            ep.admin_private + 'request-newsletter-sender', { service: proxyService, owner: 'skapi', group_numb: 0 },
+            { auth: true }
+        ).then(nl=>{
+            let endpoint_newsletter = document.getElementById("endpoint_newsletter");
+            endpoint_newsletter.href = 'mailto:' + nl;
+            endpoint_newsletter.innerHTML = nl;
+        });
+        skapi.util.request(
+            ep.admin_private + 'request-newsletter-sender', { service: proxyService, owner: 'skapi', group_numb: 1 },
+            { auth: true }
+        ).then(nl=>{
+            let endpoint_serviceletter = document.getElementById("endpoint_serviceletter");
+            endpoint_serviceletter.href = 'mailto:' + nl;
+            endpoint_serviceletter.innerHTML = nl;
+        });
+        skapi.util.request(ep.admin_private + 'get-services', {
+            service: proxyService,
+            owner: 'skapi',
+            service_id: proxyService
+        }, { auth: true }).then(srv => {
 
-        let info = document.getElementById("info");
-        for (let template of templates) {
-            info.innerHTML = info.innerHTML.replace(`%${template}%`, composeLink(r.response[template]?.url, r.response[template]?.subject));
-        }
+            srv = srv[Object.keys(srv)[0]][0];
+            console.log({ srv });
 
-        stopLoader(loading_text);
-        document.getElementById("info").hidden = false;
-    })
+            let keys = [
+                "users",
+                "newsletter_subscribers",
+                "serviceletter_subscribers_01",
+                "email"
+            ];
+            for (let key of keys) {
+                document.getElementById("info").innerHTML = document.getElementById("info").innerHTML.replace(`%${key}%`, srv[key]);
+            }
 
+            let templates = [
+                "welcome",
+                "confirmation",
+                "verification",
+                "invitation",
+                "newsletter_subscription"
+            ];
+
+            function composeLink(link, el) {
+                if (!link) return 'N/A';
+                el.href = 'mailto:' + link;
+                el.innerHTML = link;
+            }
+
+            let info = document.getElementById("info");
+            for (let template of templates) {
+                let el = document.getElementById(`endpoint_${template}`);
+                if (!el) continue;
+                composeLink(srv?.email_triggers?.template_setters?.[template], el);
+
+                if (!srv?.["template_" + template]) info.innerHTML = info.innerHTML.replace(`%template_${template}%`, 'N/A');
+                else {
+                    info.innerHTML = info.innerHTML.replace(`%template_${template}%`, `
+                    <a href="${srv?.["template_" + template].url}">
+                        ${srv?.["template_" + template].subject}
+                    </a>
+                `);
+                }
+            }
+
+            stopLoader(loading_text);
+            document.getElementById("info").hidden = false;
+        });
+    });
 </script>
 <style>
     td {
