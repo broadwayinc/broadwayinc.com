@@ -100,6 +100,7 @@ function addMore(event, key, params) {
                 <option value="<"><</option>
                 <option value=">=">>=</option>
                 <option value="<="><=</option>
+                <option value="!=">!=</option>
             </select>
         </td>
     `
