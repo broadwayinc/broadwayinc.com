@@ -464,6 +464,7 @@
                 let valType = typeof h[k]
                 if (valType !== 'string' && inp.nextElementSibling.tagName === 'SELECT') {
                     inp.nextElementSibling.value = valType === 'number' ? 'number' : valType === 'boolean' ? 'checkbox' : 'text';
+                    inp.type = valType === 'number' ? 'number' : valType === 'boolean' ? 'checkbox' : 'text';
                 }
                 inp.value = h[k];
             }
