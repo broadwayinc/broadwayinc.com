@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/style-blank@latest/blank.css">
+<link rel="stylesheet" href="../style.css">
+<!-- <script src="tickets.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsoncrawler@0.2.1/jsoncrawler.js"></script>
+<script src="/skapi.js"></script>
+
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <h2>OpenID Loggers</h2>
+    <a href="/admin/index.html">Back</a>
+</div>
+
+<hr>
+
+<div class="table_wrap">
+    <style>
+        .table_wrap {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .table_wrap table {
+            width: 100%;
+        }
+
+        .loggers {
+            text-align: left;
+        }
+
+        .loggers td {
+            padding: 4px;
+        }
+
+        .loggers tr:nth-child(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    <table class='loggers' id="registered_loggers">
+        <tr>
+            <th>Logger ID</th>
+            <th>Description</th>
+            <th></th>
+            <style>
+                th {
+                    font-weight: bold;
+                    padding: 4px;
+                }
+            </style>
+        </tr>
+    </table>
+</div>
+
+<hr>
+
+<h2>Register Logger</h2>
+<div class="table_wrap">
+    <form onsubmit="registerLogger(event)" id="form">
+        <table id="params">
+            <tr>
+                <th style="text-align:left;">Param</th>
+                <th style="text-align:left; width:70%">Value</th>
+            </tr>
+            <tr>
+                <td>
+                    Logger ID
+                </td>
+                <td>
+                    <input type="text" name="id" placeholder="Unique name for openID logger" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    URL
+                </td>
+                <td>
+                    <input type="text" name="url" placeholder="Request URL" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Method
+                </td>
+                <td>
+                    <input type="text" name="mthd" placeholder="GET | POST" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Unique Attribute
+                </td>
+                <td>
+                    <input type="text" name="usr" placeholder="email" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Description
+                </td>
+                <td>
+                    <input type="text" name="desc" placeholder="Logger description" />
+                </td>
+            </tr>
+        </table>
+        <style>
+            input[type="text"] {
+                width:100%;
+            }
+        </style>
+        <h4>Headers</h4>
+            <textarea name="hder" placeholder="Request headers (In JSON format)"
+                onkeydown="tabIndent(event, this)"></textarea>
+        <h4>Params</h4>
+            <textarea name="prms" placeholder="Request params for GET request (In JSON format)"
+                onkeydown="tabIndent(event, this)"></textarea>
+        <h4>Data</h4>
+            <textarea name="data" placeholder="Request post body for post request (In JSON format)"
+                onkeydown="tabIndent(event, this)"></textarea>
+        <br>
+        <br>
+        <input type="submit" value="Register Ticket">
+        <style>
+            input[type="submit"] {
+                float: right;
+            }
+            textarea {
+                width: 100%;
+                height: 300px;
+            }
+        </style>
+    </form>
+</div>
+
+<script>
+    let loggerList = {}
+
+    let edit_logger = (id) => {
+        document.getElementById('form').reset();
+
+        let logger = loggerList[id];
+
+        for(let k in logger) {
+            if(!document.querySelector(`input[name="${k}"]`)) continue;
+
+            if (k === 'hder' || k === 'prms' || k === 'cdtn') {
+                document.querySelector(`input[name="${k}"]`).value = JSON.stringify(logger[k], null, 2);
+            }
+            else {
+                document.querySelector(`input[name="${k}"]`).value = logger[k];
+            }
+        }
+        // focus to the top of the form
+        document.querySelector('input[name="id"]').focus();
+    }
+
+    (async ()=>{
+        let admin_private_endpoint = (await skapi.admin_endpoint).admin_private;
+        skapi.util.request(
+            admin_private_endpoint + 'register-openid',
+            { service: proxyService, owner: 'skapi', req: 'list' },
+            { auth: true }
+        ).then(res=>{
+            console.log(res);
+            for (let t of res.list) {
+                loggerList[t.id] = t;
+                let description = t.desc || "";
+                let logger_id = t.id;
+                let row = /*html*/`
+                    <td>${logger_id}</td>
+                    <td>${description}</td>
+                    <td><button onclick="edit_logger('${logger_id}')">EDIT</button></td>
+                `;
+                let tr = document.createElement('tr');
+                tr.id = logger_id;
+                tr.innerHTML = row;
+                registered_loggers.appendChild(tr);
+            }
+        }).catch(err => {
+            alert(err.message);
+        });
+    })()
+
+    async function registerLogger(event) {
+        event.preventDefault();
+        let data = skapi.util.extractFormData(event).data;
+        jsonCrawler(data).forEach(v => {
+            let delParent = data;
+            if (v.value === '' && typeof v.key === 'string') {
+                // delete key with empty value
+                for (let k of v.path) {
+                    if (delParent && k in delParent) {
+                        delParent = delParent[k];
+                    }
+                    else {
+                        return;
+                    }
+                }
+                delete delParent[v.key];
+            }
+        });
+
+        if (data?.hder) {
+            data.hder = JSON.parse(data.hder);
+        }
+        if (data?.prms) {
+            data.prms = JSON.parse(data.prms);
+        }
+        if (data?.cdtn) {
+            data.cdtn = JSON.parse(data.cdtn);
+        }
+
+        let conf = confirm('Are you sure you want to register this openID Logger?');
+        if (!conf) return;
+
+        // url: string; // openid token 해석 url
+        // mthd: string; // GET or POST
+        // hder: { [key: string]: string }; // header
+        // prms: { [key: string]: string }; // params
+        // data: any; // post body data (post 만 해당)
+        // id: string; // openid logger id
+        // usr: string; // user id로 사용할 openid profile attribute
+        // cdtn: {
+        //     key: string; // openid profile attribute
+        //     value: string | boolean | number; // openid profile attribute value
+        //     condition: "=" | ">" | "<" | ">=" | "<=" | "!=" | "ends_with";
+        //     range: string | boolean | number; // value range
+        // },
+        // req: 'create' | 'delete' | 'update' | 'list'; // request type
+
+        let admin_private_endpoint = (await skapi.admin_endpoint).admin_private;
+
+        return skapi.util.request(
+            admin_private_endpoint + 'register-openid',
+            Object.assign({ service: proxyService, owner: 'skapi', req: 'create' }, data),
+            { auth: true }
+        ).then(res=>{
+            alert('Logger registered.');
+        }).catch(err => {
+            alert(err.message);
+        });
+    }
+</script>
+<style>
+    body {
+        display: block;
+        max-width: 1200px;
+        margin: auto;
+        box-sizing: border-box;
+    }
+</style>
